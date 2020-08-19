@@ -1,0 +1,11 @@
+{
+  "name": "adstories-server",
+  "version": "1.0.0",
+  "description": "Server for claim handling at adstories.in",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "incrypt0",
+  "license": "MIT"
+}
