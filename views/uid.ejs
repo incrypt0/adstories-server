@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta property="og:title" content="AdStories" />
+    <meta
+      property="og:description"
+      content="Wanna gain through your Whatsapp Status or IG stories. Join and earn upto 840/week."
+    />
+    <meta property="og:url" content="http://adstories.in" />
+    <meta
+      property="og:image"
+      itemprop="image"
+      content="http://adstories.in/images/poster-thumbnail.jpg"
+    />
+    <title>AdStories</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="shortcut icon" href="favicon.ico" />
+    <link rel="stylesheet" href="css/styles-learn.css" />
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <a href="index.html"
+          ><img src="images/black inst logo .png" alt=""
+        /></a>
+      </div>
+    </header>
+    <div class="section">
+      <h2 class="center">Your Unique ID is</h2>
+
+      <h1 class="center"><%= uid %></h1>
+            <a class="download" id="download" href="images/poster.jpg" download>Download Ad</a>
+      <form action="<%= uidurl %> " method="post">
+        <h2 for="img">Share your status screenshot</h2>
+        <label for="img">Upload your screenshot</label>
+        <input
+          class="dropzone"
+          type="file"
+          id="img"
+          name="img"
+          accept="image/*"
+        />
+        <h2 id="wait">Waiting to Upload...</h2>
+
+        <div class="url">
+          <h2 for="img">Image URL</h2>
+          <input
+            type="text"
+            id="url"
+            name="url"
+            placeholder="Upload "
+            autocomplete="off"
+          />
+        </div>
+        <div class="button">
+          <button class="btn claim" type="submit"><h5>Upload</h5></button>
+        </div>
+        <div class="error" id="error-message"></div>
+
+        <div class="animation-container">
+          <div class="animation"></div>
+          <p></p>
+        </div>
+      </form>
+      <!-- <div class="footer">
+            <img src="images/black inst logo .png" alt="">
+        </div> -->
+      <!-- <p>join us and earn through your status and stories</p> -->
+    </div>
+
+    <script type="text/javascript" src="app-verify.js"></script>
+    <script type="text/javascript" src="imgur.js"></script>
+    <script type="text/javascript" src="upload.js"></script>
+  </body>
+</html>
