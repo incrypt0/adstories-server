@@ -8,13 +8,7 @@ $("#submit-form").submit((e)=>{
 
 
 
-    // if( (num.length != 10) || (!$.isNumeric(num)) ){
-    //     $("#error-message").css("padding", "13px");
-    //     text = "Please enter a valid number";
-    //     error.html(text);
-    //     validate = false;
-    //     return validate;
-    // }
+   
     if(uploadurl.length == 0) {
         $("#error-message").css("padding", "13px");
         text = "Upload not completed";
