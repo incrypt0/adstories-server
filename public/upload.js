@@ -1,9 +1,27 @@
+const uri = window.location.href;
+const error = document.getElementById("error-message");
+const wanumber = document.getElementById("wanumber");
+const name = document.getElementById("name");
+var downloadLink = document.createElement("a");
+downloadLink.setAttribute("id", "download-ad");
+var clicked = false;
+var downloadGenerated = false;
+
+// Function Which downloads a base64 file
 function downloadBase64File(base64Data, fileName) {
-  const downloadLink = document.createElement("a");
+  clicked = true;
+
+  console.log("clicked inside downloadb64: " + clicked);
+
   downloadLink.href = base64Data;
-  console.log(base64Data)
   downloadLink.download = fileName;
+
+  if (base64Data === "") {
+    clicked = !clicked;
+  }
+
   downloadLink.click();
+  downloadGenerated = !downloadGenerated;
 }
 
 // Axios Post request to watermark image
@@ -13,34 +31,41 @@ const waterMarkImage = () => {
   axios({
     method: "post",
     url: Url,
-  }).then((data) => {
-    console.log(data);
-    downloadBase64File(data,'Ad.jpg');
+  }).then((resp) => {
+    downloadBase64File(resp.data, "ad.jpg");
   });
 };
 
 // Verify Before download
 document.getElementById("download").addEventListener("click", function () {
-  const uri = window.location.href;
-  const error = document.getElementById("error-message");
-  const wanumber = document.getElementById("wanumber");
-  const name = document.getElementById("name");
+  if (!clicked) {
+    clicked = !clicked;
 
-  const Data = {
-    name: name.value,
-    wanumber: wanumber.value,
-  };
-  console.log(wanumber.value.length !== 10 && name.value.length == 0);
-  console.log(wanumber.value.length + " " + name.value.length);
-  if (wanumber.value.length !== 10 && name.value.length == 0) {
-    console.log("IN");
-    error.innerText =
-      "Please enter a name and a valid whatsapp number before downloading image";
+    const Data = {
+      name: name.value,
+      wanumber: wanumber.value,
+    };
+    console.log(wanumber.value.length !== 10 && name.value.length == 0);
+    console.log(wanumber.value.length + " " + name.value.length);
+    if (wanumber.value.length !== 10 && name.value.length == 0) {
+      console.log("IN");
+      error.innerText =
+        "Please enter a name and a valid whatsapp number before downloading image";
+    } else {
+      wanumber.readOnly = true;
+      name.readOnly = true;
+      console.log("poyi makkale");
+      waterMarkImage();
+    }
   } else {
-    wanumber.readOnly = true;
-    name.readOnly = true;
-    console.log("pyi makkale");
-    waterMarkImage();
+    if (downloadGenerated) {
+      downloadLink.click();
+    } else {
+      error.innerText = "Click the download button only once";
+      setTimeout(() => {
+        error.innerText = "";
+      }, 4 * 1000);
+    }
   }
 });
 
