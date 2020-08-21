@@ -27,7 +27,7 @@ router.post("/", (req, res) => {
 router.post("/watermark",async (req, res) => {
 
   var buf= await waterMarkImage("public/images/poster.jpg");
- 
+
       console.log(buf.substring(0,25));
       res.send(buf)
 
