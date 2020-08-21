@@ -2,6 +2,7 @@ const express = require("express");
 const waterMarkImage = require("../../imagegen");
 const router = express.Router();
 
+
 var adList = ["santoor", "chandrika"];
 
 
@@ -24,14 +25,15 @@ router.post("/", (req, res) => {
 });
 
 
-router.post("/watermark",async (req, res) => {
-
-  var buf= await waterMarkImage("public/images/poster.jpg");
-
-      console.log(buf.substring(0,25));
-      res.send(buf)
-
-  
+router.post("/watermark",(req, res) => {
+  console.log(req.body);
+  // var buf= await waterMarkImage("public/images/poster.jpg");
+  //     console.log(buf.substring(0,25));
+  //     res.send(buf)
+  waterMarkImage("public/images/poster.jpg").then((buf)=>{
+    console.log(buf.substring(0,25));
+        res.send(buf)
+  });
 });
 
 module.exports = router;
