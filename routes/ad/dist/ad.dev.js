@@ -8,7 +8,7 @@ var router = express.Router();
 
 var shortid = require("shortid");
 
-var adList = ["santoor", "chandrika"]; // Ads Route
+var adList = ["adstories", "santoor", "chandrika"]; // Ads Route
 
 router.get("/", function (req, res) {
   ad = req.originalUrl.split("/")[1];

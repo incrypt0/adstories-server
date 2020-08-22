@@ -3,7 +3,7 @@ const waterMarkImage = require("../../imagegen");
 const router = express.Router();
 const shortid = require("shortid");
 
-var adList = ["santoor", "chandrika"];
+var adList = ["adstories","santoor", "chandrika"];
 
 // Ads Route
 router.get("/", (req, res) => {

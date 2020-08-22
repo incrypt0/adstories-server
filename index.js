@@ -17,7 +17,7 @@ app.use(
 
 app.use("/:ad", adsRoute);
 app.get("/", (req, res) => {
-  res.redirect("/santoor");
+  res.redirect("/adtstories");
 });
 
 app.listen(3000, () => {
