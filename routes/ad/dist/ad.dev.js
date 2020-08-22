@@ -54,7 +54,7 @@ router.post("/", function (req, res) {
       return res.status(400).json({
         msg: "Already Registered for claim"
       });
-    } //  Save claim to databse
+    } //  Save claim to database
 
 
     newClaim.save().then(function (claim) {
@@ -68,7 +68,7 @@ router.post("/", function (req, res) {
       return res.status(400).send("An error occured please try again");
     });
   });
-}); // Watermark and
+}); // Watermark and Unique ID Generation
 
 router.post("/watermark", function (req, res) {
   // Generate unique ID's

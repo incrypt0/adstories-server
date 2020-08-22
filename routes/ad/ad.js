@@ -53,7 +53,7 @@ router.post("/", (req, res) => {
       });
     }
 
-    //  Save claim to databse
+    //  Save claim to database
     newClaim
       .save()
       .then((claim) => {
@@ -70,7 +70,7 @@ router.post("/", (req, res) => {
   });
 });
 
-// Watermark and
+// Watermark and Unique ID Generation
 router.post("/watermark", (req, res) => {
   // Generate unique ID's
   var watermarkText = shortid.generate();
