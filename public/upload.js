@@ -148,7 +148,7 @@ function addToForm(inputKey, inputValue) {
 function createUidsInput(uid, wmuid) {
   if (uid && wmuid) {
     addToForm("uid", uid);
-    addToForm("wmuid", wmuid);
+    addToForm("wmid", wmuid);
     form.submit();
   } else {
     error.innerHTML = "Please download the file before clicking submit";
