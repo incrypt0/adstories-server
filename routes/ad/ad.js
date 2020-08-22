@@ -1,10 +1,9 @@
 const express = require("express");
 const waterMarkImage = require("../../imagegen");
 const router = express.Router();
-
+const shortid = require("shortid");
 
 var adList = ["santoor", "chandrika"];
-
 
 // Ads Route
 router.get("/", (req, res) => {
@@ -14,25 +13,31 @@ router.get("/", (req, res) => {
 });
 
 // Unique ID generation
-var i = 10000000;
+
 router.post("/", (req, res) => {
   ad = req.params.ad;
-  uid = i.toString(36);
-
-  uidurl = `/${ad}/${i.toString(36)}`;
-  i += 1;
-  res.render("uid.ejs");
+  // res.render("uid.ejs");
+  res.json(req.body);
 });
 
-
-router.post("/watermark",(req, res) => {
+// Watermark and
+router.post("/watermark", (req, res) => {
   console.log(req.body);
+
   // var buf= await waterMarkImage("public/images/poster.jpg");
   //     console.log(buf.substring(0,25));
   //     res.send(buf)
-  waterMarkImage("public/images/poster.jpg").then((buf)=>{
-    console.log(buf.substring(0,25));
-        res.send(buf)
+  var watermarkText = shortid.generate();
+  var uid = shortid.generate();
+  
+  waterMarkImage("public/images/poster.jpg",watermarkText).then((buf) => {
+    var data={
+      buffer:buf,
+      wmid:watermarkText,
+      uid:uid
+    }
+    console.log(buf.substring(0, 25));
+    res.json(data);
   });
 });
 

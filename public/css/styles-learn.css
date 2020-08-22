@@ -403,6 +403,9 @@ OPEN imgur CSS
     display: none;
 }
 
+.hidden-input{
+    display: none;
+}
 /*
 CLOSE imgur CSS
 */

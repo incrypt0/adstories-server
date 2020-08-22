@@ -1,5 +1,7 @@
 $("#submit-form").submit((e)=>{   
     // var name = $("#fname").val();
+
+    console.log("Submission eventeeeeeeyyyy")
     var status = $("#status option:selected").text();
     var error = $("#error-message");
     var uploadurl = $("#url").val();
@@ -27,7 +29,7 @@ $("#submit-form").submit((e)=>{
 
 
 
-    // e.preventDefault();
+    e.preventDefault();
     //     $.ajax({
     //         url:"https://script.google.com/macros/s/AKfycbxmSljKTguJ0Mez_smO52cDFPVDgPBs2e7Zs7is-X2nA1Gpha3n/exec",
     //         data:$("#submit-form").serialize(),
