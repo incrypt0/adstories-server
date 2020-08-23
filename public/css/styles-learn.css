@@ -82,7 +82,13 @@ h1{
     color: grey;
 }
 
-
+.msg{
+    font-family: Axiforma;
+    color:black;
+    background-color: rgb(241, 152, 152);
+    margin-top: 2rem;
+    text-align:center;
+}
 
 
 header div{

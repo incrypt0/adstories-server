@@ -29,7 +29,13 @@
         /></a>
       </div>
     </header>
+    <div class="msg" id="msg">
+      <% if(typeof msg != 'undefined'){ %>
+   <%= msg %>
+      <%}%>
+    </div>
     <div class="section">
+     
       <h2 class="center">Upload your view count</h2>
 
       <form id="submit-form" method="POST" action="/claim ">
@@ -80,11 +86,7 @@
           </button>
         </div>
         <div class="error" id="error-message"></div>
-        <div class="msg" id="msg">
-          <% if(typeof msg != 'undefined'){ %>
-          <h5><%= msg %></h5>
-          <%}%>
-        </div>
+        
         <div class="button">
           <a href="/claim/status">View a status of a claim</a>
         </div>
