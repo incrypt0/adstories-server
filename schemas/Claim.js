@@ -25,18 +25,31 @@ const ClaimSchema = new Schema({
     type: String,
     required: true,
   },
-  upiid: {
+  upi: {
     type: String,
-    
   },
-  url:{
-    type:String,
-    required:true
+  url: {
+    type: String,
+    required: true,
   },
-  img:{
-    type:String,
-
-  }
+  viewsurl: {
+    type: String,
+  },
+  img: {
+    type: String,
+  },
+  submitted: {
+    type: Boolean,
+    default: false,
+  },
+  verified: {
+    type: Boolean,
+    default: false,
+  },
+  payment: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 module.exports = Claim = mongoose.model("claims", ClaimSchema);

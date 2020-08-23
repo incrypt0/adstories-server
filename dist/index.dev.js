@@ -1,5 +1,21 @@
 "use strict";
 
+var env = process.argv[2] || "dev";
+
+switch (env) {
+  case "dev":
+    // Setup development config
+    // dotenv config
+    require("dotenv").config();
+
+    console.log("Running in dev mode");
+    break;
+
+  case "prod":
+    // Setup production config
+    break;
+}
+
 var express = require("express");
 
 var _require = require("express"),
@@ -11,13 +27,18 @@ var Jimp = require("jimp");
 
 var mongoose = require("mongoose");
 
-var waterMarkImage = require("./imagegen");
+var waterMarkImage = require("./imagegen"); // Routes
+
 
 var adsRoute = require("./routes/ad/ad");
 
-app.use(express["static"](__dirname + "/public"));
+var claimAmountRoute = require("./routes/claim/claim_amount"); // Static directory
 
-var db = require("./config/keys").mongoURI;
+
+app.use(express["static"](__dirname + "/public")); // Mongo URI
+
+var db = require("./config/keys").mongoURI; // Connect to mongoose
+
 
 mongoose.connect(db, {
   useNewUrlParser: true
@@ -25,13 +46,18 @@ mongoose.connect(db, {
   console.log("Database connected successfully ".concat(db));
 })["catch"](function (err) {
   console.log("Unable to connect to the database ".concat(err));
-});
-app.set("view-engine", "ejs");
+}); // Setting ejs as view engine
+
+app.set("view-engine", "ejs"); // json essentials
+
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
-}));
-app.use("/:ad", adsRoute);
+})); // Routes
+
+app.use("/claim", claimAmountRoute);
+app.use("/:ad", adsRoute); // Root
+
 app.get("/", function (req, res) {
   res.redirect("/adstories");
 });

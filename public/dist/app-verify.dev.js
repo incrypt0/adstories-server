@@ -1,24 +1,24 @@
+"use strict";
+
 // Imgur Kalikal
-var feedback = function (res) {
+var feedback = function feedback(res) {
   if (res.success === true) {
     var get_link = res.data.link.replace(/^http:\/\//i, "https://");
     document.querySelector(".status").classList.add("bg-success");
     document.getElementById("wait").innerHTML = "Uploaded Successfully";
     document.getElementById("wait").style.color = "green";
-
     document.getElementById("url").value = get_link;
   }
-};
+}; // Imgur
 
-// Imgur
+
 new Imgur({
-  clientid: "59f06376fe068a7", //You can change this ClientID
-  callback: feedback,
+  clientid: "59f06376fe068a7",
+  //You can change this ClientID
+  callback: feedback
 });
-
-$("#submit-form").submit((e) => {
+$("#submit-form").submit(function (e) {
   var uid = $("#uid").val();
-
   var status = $("#status option:selected").text();
   var error = $("#error-message");
   var uploadurl = $("#url").val();
@@ -46,9 +46,7 @@ $("#submit-form").submit((e) => {
   } else {
     $(".animation-container").addClass("loader-container");
     $(".animation").addClass("loader");
-  }
-
-  //   e.preventDefault();
+  } //   e.preventDefault();
   //     $.ajax({
   //         url:"https://script.google.com/macros/s/AKfycbxmSljKTguJ0Mez_smO52cDFPVDgPBs2e7Zs7is-X2nA1Gpha3n/exec",
   //         data:$("#submit-form").serialize(),
@@ -60,7 +58,7 @@ $("#submit-form").submit((e) => {
   //         },
   //         error:function (err){
   //             alert(err);
-
   //         }
   //     });
+
 });
