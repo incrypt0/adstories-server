@@ -3,7 +3,8 @@ switch (env) {
   case "dev":
     // Setup development config
     // dotenv config
-    require("dotenv").config({ path: "./.env" });
+    const dotenv = require("dotenv");
+    dotenv.config();
     console.log("Running in dev mode");
     break;
   case "prod":
@@ -58,7 +59,7 @@ app.use("/:ad", adsRoute);
 app.get("/", (req, res) => {
   res.redirect("/adstories");
 });
-var port =process.env.PORT || 3000
+var port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log("listening on " + port);
 });

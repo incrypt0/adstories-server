@@ -16,7 +16,7 @@ var adList = ["adstories", "santoor", "chandrika"];
 // Ads Route
 router.get("/", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
-  if (adList.includes(ad)) res.render("index.ejs");
+  if (adList.includes(ad)) res.render("index.ejs",{ad:ad});
   else res.send("404 page note found");
 });
 
@@ -43,9 +43,7 @@ router.post("/", (req, res) => {
       wmid: req.body.wmid,
     }).then((user) => {
       var ad = req.originalUrl.split("/")[1];
-      console.log("Hello");
-      console.log(ad);
-
+     
       if (user) {
         console.log("Huuummm");
         console.log(ad);

@@ -6,10 +6,9 @@ switch (env) {
   case "dev":
     // Setup development config
     // dotenv config
-    require("dotenv").config({
-      path: "./.env"
-    });
+    var dotenv = require("dotenv");
 
+    dotenv.config();
     console.log("Running in dev mode");
     break;
 
