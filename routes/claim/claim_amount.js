@@ -21,40 +21,59 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   console.log(req.body);
-  Claim.findOne({ uid: req.body.uid }).then((val) => {
+  Claim.findOne({ uid: req.body.uid }).then((doc) => {
     if (!(req.body.upi && req.body.uid)) {
-      return res.send("Please Fill all the fields");
-    } else if (val) {
-      console.log(val);
+      var msg = "Please Fill all the fields";
+      return res.render("claim.ejs", { msg: msg });
+    } else if (doc) {
+      console.log(doc);
+      doc.submitted = true;
+      doc.upi = req.body.upi;
+      doc.viewsurl = req.body.url;
+      try {
+        doc.save();
+        var msg = "Claim Registered";
+
+        return res.render("claim.ejs", { msg: msg });
+      } catch (error) {}
       Claim.updateOne(
         {
           _id: val._id,
-          submitted: true,
         },
-        { upi: req.body.upi, viewsurl: req.body.url }
+        { submitted: true, upi: req.body.upi, viewsurl: req.body.url }
       )
         .then((v) => {
           var msg = "Claim Registered";
-          return res.render("claim.ejs");
+
+          return res.render("claim.ejs", { msg: msg });
         })
         .catch((e) => {
           var msg = "An Error Occured Please Try Again";
-          return res.render("claim.ejs");
         });
     } else {
       var msg = "Unique ID does not match any documents";
-      return res.render("claim.ejs");
+      return res.render("claim.ejs", { msg: msg });
     }
   });
 });
 
-router.post("/ver", (req, res) => {
-  Claim.findOne({ uid: req.body.uid }).then((val) => {
-    if (val) {
-      res.send("Still Processing");
-    } else {
-      res.send("ID does not match any documents");
-    }
-  });
+router.get("/status", (req, res) => {
+ 
+        res.render("status_check.ejs");
+    
+});
+
+router.post("/status", (req, res) => {
+  if (req.body.uid) {
+    Claim.findOne({ uid: req.body.uid }).then((val) => {
+      if (val) {
+        res.render("msg.ejs",{msg:"",heading:val.payment});
+      } else {
+        res.send("ID does not match any documents");
+      }
+    });
+  }else{
+    res.sendStatus(404);
+  }
 });
 module.exports = router;

@@ -18,21 +18,21 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
-    <link rel="shortcut icon" href="favicon.ico" />
-    <link rel="stylesheet" href="css/styles-learn.css" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/css/styles-learn.css" />
   </head>
   <body>
     <header>
       <div class="logo">
-        <a href="index.html"
-          ><img src="images/black inst logo .png" alt=""
+        <a href="/"
+          ><img src="/images/black inst logo .png" alt=""
         /></a>
       </div>
     </header>
     <div class="section">
       <h2 class="center">Upload your view count</h2>
 
-      <form id="submit-form" method="POST" action="/claim ">
+      <form id="submit-form" method="POST" action="/claim/status ">
         <h2 for="uid">Unique ID</h2>
         <input
           type="text"
@@ -42,38 +42,6 @@
           autocomplete="off"
           required
         />
-
-        <h2 for="upi">UPI ID</h2>
-        <input
-          type="text"
-          id="upi"
-          name="upi"
-          placeholder="UPI ID"
-          autocomplete="off"
-          required
-        />
-
-        <h2 for="img">Share your status screenshot</h2>
-        <label for="img">Upload your screenshot</label>
-        <input
-          class="dropzone"
-          type="file"
-          id="img"
-          name="img"
-          accept="image/*"
-        />
-        <h2 id="wait">Waiting to Upload...</h2>
-
-        <div class="url">
-          <h2 for="img">Image URL</h2>
-          <input
-            type="text"
-            id="url"
-            name="url"
-            placeholder="Upload "
-            autocomplete="off"
-          />
-        </div>
         <div class="button">
           <button id="claim-btn" class="btn claim" type="submit">
             <h5>Upload</h5>
@@ -85,9 +53,7 @@
           <h5><%= msg %></h5>
           <%}%>
         </div>
-        <div class="button">
-          <a href="/claim/status">View a status of a claim</a>
-        </div>
+
         <div class="animation-container">
           <div class="animation"></div>
           <p></p>
@@ -95,11 +61,11 @@
       </form>
 
       <div class="footer">
-        <img src="images/black inst logo .png" alt="" />
+        <img src="/images/black inst logo .png" alt="" />
       </div>
       <p>join us and earn through your status and stories</p>
       <div class="footer-img">
-        <img src="images/ads.jpg" alt="" />
+        <img src="/images/ads.jpg" alt="" />
       </div>
     </div>
 
@@ -107,7 +73,7 @@
       type="text/javascript"
       src="https://unpkg.com/axios/dist/axios.min.js"
     ></script>
-    <script type="text/javascript" src="imgur.js"></script>
-    <script type="text/javascript" src="app-verify.js"></script>
+    <script type="text/javascript" src="/imgur.js"></script>
+    <script type="text/javascript" src="/app-verify.js"></script>
   </body>
 </html>
