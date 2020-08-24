@@ -45,10 +45,9 @@ router.post("/", (req, res) => {
       var ad = req.originalUrl.split("/")[1];
      
       if (user) {
-        console.log("Huuummm");
-        console.log(ad);
+      
         var msg = "Already Registered for claim";
-        return res.render("index.ejs");
+        return res.render("index.ejs",{msg:msg});
       }
 
       // Create new Claim
