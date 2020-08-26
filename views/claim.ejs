@@ -1,33 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta property="og:title" content="AdStories" />
-    <meta
-      property="og:description"
-      content="Wanna gain through your Whatsapp Status or IG stories. Join and earn upto 840/week."
-    />
-    <meta property="og:url" content="http://adstories.in" />
-    <meta
-      property="og:image"
-      itemprop="image"
-      content="http://adstories.in/images/poster-thumbnail.jpg"
-    />
-    <title>AdStories</title>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <link rel="shortcut icon" href="favicon.ico" />
-    <link rel="stylesheet" href="css/styles-learn.css" />
+    <%- include ("./partials/head") %>
   </head>
   <body>
     <header>
-      <div class="logo">
-        <a href="index.html"
-          ><img src="images/black inst logo .png" alt=""
-        /></a>
-      </div>
+      <%- include ("./partials/header") %>
     </header>
     <div class="msg" id="msg">
       <% if(typeof msg != 'undefined'){ %>
@@ -96,13 +74,7 @@
         </div>
       </form>
 
-      <div class="footer">
-        <img src="images/black inst logo .png" alt="" />
-      </div>
-      <p>join us and earn through your status and stories</p>
-      <div class="footer-img">
-        <img src="images/ads.jpg" alt="" />
-      </div>
+      <%- include ("./partials/footer") %>
     </div>
 
     <script

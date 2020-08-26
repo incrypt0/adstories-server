@@ -47,7 +47,7 @@ body{
     /* background-image: url(../images/bg2\ \(1\).jpg);
     background-size: 100%;    
     background-repeat: no-repeat; */
-
+    font-family: Axiforma;
     align-items: center;
     color: white;
 }
@@ -201,8 +201,13 @@ header{
     background: linear-gradient(138deg, rgba(239,80,81,1) 0%, rgba(224,45,116,1) 60%, rgba(156,107,170,1) 100%);
 }
 
+
+
+
+
 .footer{
     padding-top: 50px;
+ 
 }
 
 .footer img{
@@ -459,4 +464,13 @@ form{
     
 
 
+}
+.spacer{
+    height: 4rem;
+}
+.msg-box {
+    margin-top:3rem;
+    height: 500px;
+    box-sizing: border-box;
+    color:black;
 }

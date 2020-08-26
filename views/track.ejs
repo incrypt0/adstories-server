@@ -8,15 +8,15 @@
       <%- include ("./partials/header") %>
     </header>
     <div class="section">
-      <h2 class="center"><%= heading %> </h2>
-
-      <h1 class="center"><%= msg %></h1>
       
-      <div class="animation-container">
-        <div class="animation"></div>
-        <p></p>
-      </div>
 
+      <h1 class="center"><%= heading %></h1>
+
+      <%- include ("./partials/track") %>
+      
+      <div class="spacer"></div>
+      <div class="msg-box"><%= msg %></div>
+      
       <%- include ("./partials/footer") %>
     </div>
     <script type="text/javascript" src="/imgur.js"></script>

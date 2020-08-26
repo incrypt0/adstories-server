@@ -53,6 +53,9 @@ app.use(
 
 // Routes
 app.use("/claim", claimAmountRoute);
+app.get("/track", (req, res) => {
+  res.render("track.ejs",{heading:"Claim Status",msg:"Your claim has been verified and payment is under process",submitted:"done",verified:"active",payment:"normal"});
+});
 app.use("/:ad", adsRoute);
 
 // Root
