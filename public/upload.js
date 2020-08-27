@@ -89,12 +89,15 @@ const waterMarkImage = (data) => {
     data: { data },
   })
     .then((resp) => {
+      console.log(resp.data);
+      if(!resp.data.success){
       uid = resp.data.uid;
       wmid = resp.data.wmid;
       // // ==================DEV LOGS================================= //
       // console.log(uid + " : " + resp.data.uid);
       // console.log(wmid);
       downloadBase64File(resp.data.buffer, "ad.jpg");
+      }
     })
     .catch((err) => {
       clicked = false;

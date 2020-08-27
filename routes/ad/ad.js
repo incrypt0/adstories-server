@@ -3,10 +3,12 @@ const waterMarkImage = require("../../imagegen");
 const router = express.Router();
 const shortid = require("shortid");
 const ClaimConstructor = require("../../schemas/Claim");
+const TempConstructor = require("../../schemas/Temp");
 const { generate } = require("shortid");
 const { response } = require("express");
 
 const Claim = new ClaimConstructor();
+const Temp = new TempConstructor();
 
 // Mock Ads <Development only>
 var adList = ["adstories", "santoor", "chandrika"];
@@ -198,12 +200,23 @@ router.post("/watermark", (req, res) => {
         wmid: watermarkText,
         uid: uid,
       };
-      console.log(buf.substring(0, 25));
-      res.json(data);
+      let newTemp= new Temp.fromCollection(ad)({
+        wmid:watermarkText,
+        uid:uid,
+      })
+      newTemp.save().then((val)=>{
+        return res.json(data);
+      }).catch((e)=>{
+        return res.json({
+          success:false,
+          msg: "Cannot generate download please try again later.",
+        })
+      })
+      
     })
     .catch((e) => {
       var data = {
-        success: true,
+        success: false,
         msg: "Cannot generate download please try again later.",
       };
     });
