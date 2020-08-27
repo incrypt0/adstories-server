@@ -52,4 +52,4 @@ const ClaimSchema = new Schema({
   },
 });
 
-module.exports = Claim = mongoose.model("claims", ClaimSchema);
+module.exports = function ClaimConstructor()  { this.fromCollection = function(collection){return mongoose.model(collection, ClaimSchema)}};
