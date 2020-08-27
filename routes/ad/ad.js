@@ -200,19 +200,21 @@ router.post("/watermark", (req, res) => {
         wmid: watermarkText,
         uid: uid,
       };
-      let newTemp= new Temp.fromCollection(ad)({
-        wmid:watermarkText,
-        uid:uid,
-      })
-      newTemp.save().then((val)=>{
-        return res.json(data);
-      }).catch((e)=>{
-        return res.json({
-          success:false,
-          msg: "Cannot generate download please try again later.",
+      let newTemp = new Temp.fromCollection(ad)({
+        wmid: watermarkText,
+        uid: uid,
+      });
+      newTemp
+        .save()
+        .then((val) => {
+          return res.json(data);
         })
-      })
-      
+        .catch((e) => {
+          return res.json({
+            success: false,
+            msg: "Cannot generate download please try again later.",
+          });
+        });
     })
     .catch((e) => {
       var data = {
@@ -445,39 +447,40 @@ router.get("/page", (req, res) => {
 
 router.post("/update", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
+
   if (req.body) {
-    console.log(req.body.dbid)
+    console.log(req.body.dbid);
     Claim.fromCollection(ad)
       .findById(req.body.dbid)
       .then((doc) => {
-        
-        
-          doc.submitted = req.body.submitted??doc.submitted;
-    
-          doc.verified = req.body.verified??doc.verified;
-       
-          doc.payment = req.body.verified??doc.payment;
-       
-        doc
-          .save()
-          .then((e) => {
-            console.log("blah")
-            console.log(e);
-            console.log("blah")
-            return res.json({
-              success: true,
-              submitted:e.submitted,
-              verified:e.verified,
-              payment:e.payment,
-              uid:e.uid,
+        if (doc) {
+          
+          doc.submitted = req.body.submitted ?? doc.submitted;
+
+          doc.verified = req.body.verified ?? doc.verified;
+
+          doc.payment = req.body.verified ?? doc.payment;
+
+          doc
+            .save()
+            .then((e) => {
+              console.log("blah");
+              console.log(e);
+              console.log("blah");
+              return res.json({
+                success: true,
+                submitted: e.submitted,
+                verified: e.verified,
+                payment: e.payment,
+                uid: e.uid,
+              });
+            })
+            .catch((e) => {
+              return res.json({
+                success: false,
+              });
             });
-          })
-          .catch((e) => {
-            return res.json({
-              success: false,
-              
-            });
-          });
+        }
       })
       .catch((e) => {
         console.log(e);
