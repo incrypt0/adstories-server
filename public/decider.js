@@ -20,6 +20,7 @@ function postUpdate(type, dbid, item, boolVal) {
   var reqOptions = {};
   reqOptions[type] = dataVal;
   reqOptions.dbid = dbid;
+  reqOptions.type =type;
   var raw = JSON.stringify(reqOptions);
   var requestOptions = {
     method: "POST",

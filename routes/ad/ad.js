@@ -454,12 +454,25 @@ router.post("/update", (req, res) => {
       .findById(req.body.dbid)
       .then((doc) => {
         if (doc) {
+          if(req.body.type == "submitted"){
+            doc.submitted = req.body.submitted ;
+          }
+          else if(req.body.type == "verified"){
+            doc.verified = req.body.verified 
+          }
+          else if(req.body.type == "payment"){
+            doc.payment = req.body.payment ;
+          }else {
+            return res.json({
+              success: false,
+            });
+          }
           
-          doc.submitted = req.body.submitted ?? doc.submitted;
+          
 
-          doc.verified = req.body.verified ?? doc.verified;
+         
 
-          doc.payment = req.body.verified ?? doc.payment;
+          
 
           doc
             .save()
