@@ -149,47 +149,44 @@ router.post("/", (req, res) => {
 // Watermark and Unique ID Generation
 router.post("/watermark", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
-  var uid = req.body.uid;
-  var wmid = req.body.wmid;
   //
   // Generate unique ID's
   var watermarkText = shortid.generate();
   var uid = shortid.generate();
-  var generated = false;
-  var uidGenerator = () => {
-    console.log("running uidGenerator");
-    if (!generated) {
-      uid = shortid.generate();
-      watermarkText = shortid.generate();
-      Claim.fromCollection(ad)
-        .findOne({ uid: uid })
-        .then((val) => {
-          console.log("Checking if uid exists");
-          if (val) {
-            console.log("uid exists");
-            uidGenerator();
-          } else {
-            Claim.fromCollection(ad)
-              .findOne({ wmid: wmid })
-              .then((val) => {
-                console.log("Checking if wmid exists");
-                if (val) {
-                  console.log("wmid exists");
-                  uidGenerator();
-                } else {
-                  console.log("Ellam Set");
-                  generated = true;
-                }
-                return;
-              });
-          }
-          return;
-        });
-      return;
-    }
-  };
+  // var generated = false;
+  // var uidGenerator = () => {
+  //   console.log("running uidGenerator");
 
-  uidGenerator();
+    
+  //     Claim.fromCollection(ad)
+  //       .findOne({ uid: uid })
+  //       .then((val) => {
+  //         console.log("Checking if uid exists");
+  //         if (val) {
+  //           console.log("uid exists");
+  //           uidGenerator();
+  //         } else {
+  //           Claim.fromCollection(ad)
+  //             .findOne({ wmid: wmid })
+  //             .then((val) => {
+  //               console.log("Checking if wmid exists");
+  //               if (val) {
+  //                 console.log("wmid exists");
+  //                 uidGenerator();
+  //               } else {
+  //                 console.log("Ellam Set");
+  //                 generated = true;
+  //               }
+  //               return;
+  //             });
+  //         }
+  //         return;
+  //       });
+  //     return;
+    
+  // };
+
+  // uidGenerator();
 
   // Watermark the ad
   waterMarkImage("public/images/poster.jpg", watermarkText)
@@ -207,6 +204,7 @@ router.post("/watermark", (req, res) => {
       newTemp
         .save()
         .then((val) => {
+          console.log("hi"+val.toString())
           return res.json(data);
         })
         .catch((e) => {
@@ -453,7 +451,9 @@ router.post("/update", (req, res) => {
     Claim.fromCollection(ad)
       .findById(req.body.dbid)
       .then((doc) => {
+        console.log("hi")
         if (doc) {
+          console.log("doc exists")
           if(req.body.type == "submitted"){
             doc.submitted = req.body.submitted ;
           }
@@ -467,12 +467,6 @@ router.post("/update", (req, res) => {
               success: false,
             });
           }
-          
-          
-
-         
-
-          
 
           doc
             .save()
@@ -493,6 +487,11 @@ router.post("/update", (req, res) => {
                 success: false,
               });
             });
+        }else{
+          console.log("doc dont exists")
+          return res.json({
+            success: false,
+          });
         }
       })
       .catch((e) => {
