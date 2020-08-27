@@ -3,6 +3,7 @@ const waterMarkImage = require("../../imagegen");
 const router = express.Router();
 const shortid = require("shortid");
 const ClaimConstructor = require("../../schemas/Claim");
+const { generate } = require("shortid");
 
 const Claim = new ClaimConstructor();
 
@@ -40,9 +41,8 @@ router.post("/", (req, res) => {
     })
     .then((user) => {
       if (user) {
-        return res.status(400).json({
-          msg: "Already Registered for claim",
-        });
+        var msg = "Claim Registered";
+        return res.render("index.ejs", { msg: msg,ad:ad,bgcolor:"green",color:"white" });
       }
       console.log(ad + "pwoliye2");
       // Check whether wmid already exist
@@ -56,7 +56,7 @@ router.post("/", (req, res) => {
           if (user) {
             console.log(ad + "pwoliye4");
             var msg = "Already Registered for claim";
-            return res.render("index.ejs", { msg: msg });
+            return res.render("index.ejs", { ad:ad,msg: msg ,bgcolor:"#f19898",color:"black"});
           }
 
           // Create new Claim
@@ -73,25 +73,28 @@ router.post("/", (req, res) => {
             });
           } catch (e) {
             console.log(e);
-            return res.status(400).json({
-              msg: "Already Registered for claim",
-            });
+            return res.render("index.ejs", { ad: ad, msg: "Already Registered for claim",bgcolor:"#f19898",color:"black" })
+
           }
 
           //  Save claim to database
           newClaim
             .save()
             .then((claim) => {
-              return res.status(201).json({
+              console.log("ayoo")
+              var heading="Your Unique ID  IS"
+              var msg=req.body.uid
+              
+              return res.render("msg.ejs",{
                 success: true,
-                msg: "Your Unique ID is ",
-                uid: req.body.uid,
+                msg: msg,
+                heading:heading
               });
             })
             .catch((e) => {
               console.log(e);
               var msg = "An error occured please try again";
-              return res.render("index.ejs", { ad: ad, msg: msg });
+              return res.render("index.ejs", { ad: ad, msg: msg ,bgcolor:"#f19898",color:"black"});
             });
         });
     });
@@ -106,11 +109,42 @@ router.post("/", (req, res) => {
 // Watermark and Unique ID Generation
 router.post("/watermark", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
+  var uid =req.body.uid 
+  var wmid=req.body.wmid
   //
   // Generate unique ID's
   var watermarkText = shortid.generate();
   var uid = shortid.generate();
-
+  var generated=false
+  var uidGenerator=()=>{
+    console.log("running uidGenerator");
+    if(!generated){
+    uid=shortid.generate();
+    watermarkText = shortid.generate();
+    Claim.fromCollection(ad).findOne({uid:uid}).then((val)=>{
+      console.log("Checking if uid exists");
+      if(val){
+        console.log("uid exists");
+        uidGenerator();
+      }else{
+        Claim.fromCollection(ad).findOne({wmid:wmid}).then((val)=>{
+          console.log("Checking if wmid exists");
+          if(val){
+            console.log("wmid exists");
+            uidGenerator();
+          }else{
+            console.log("Ellam Set");
+            generated=true;
+          }
+          return;
+        })
+      }
+      return;
+    })
+    return
+    }
+  }
+  uidGenerator();
   // Watermark the ad
   waterMarkImage("public/images/poster.jpg", watermarkText)
     .then((buf) => {
@@ -131,52 +165,70 @@ router.post("/watermark", (req, res) => {
     });
 });
 
+/**
+ * @route GET /:ad/claim
+ * @desc Claim Amount Page
+ * @access Public
+ */
 router.get("/claim", (req, res) => {
   var url = req.originalUrl;
   res.render("claim.ejs", { url: url });
 });
 
+
+/**
+ * @route POST /:ad/claim
+ * @desc Claim Amount Page
+ * @access Public
+ */
 router.post("/claim", (req, res) => {
   var url = req.originalUrl;
   var ad = req.originalUrl.split("/")[1];
+
   console.log(req.body);
+
+  // Find the claim if it exists
   Claim.fromCollection(ad)
     .findOne({ uid: req.body.uid })
     .then((doc) => {
       if (!(req.body.upi && req.body.uid)) {
+        //
+        //
         var msg = "Please Fill all the fields";
         return res.render("claim.ejs", { msg: msg, url: url });
+        //
+        //
       } else if (doc) {
-        
-        console.log(doc);
+        //
+        //
+        //
+        if(doc.submitted===true){
+          var msg = "Claim Updated with new details";
+              return res.render("claim.ejs", { msg: msg, url: url });
+        }
         doc.submitted = true;
         doc.upi = req.body.upi;
         doc.viewsurl = req.body.url;
-        console.log("doc : ")
-        console.log(doc)
+
+        console.log("doc : ");
+        console.log(doc);
+
         try {
-          doc.save();
-          var msg = "Claim Registered";
-
-          return res.render("claim.ejs", { msg: msg, url: url });
+          // Try to save the modified document
+          // 
+          doc
+            .save()
+            .then((val) => {
+              var msg = "Claim Registered";
+              return res.render("claim.ejs", { msg: msg, url: url });
+            })
+            .catch((e) => {
+              var msg = "An error occured please reload and resend your info.";
+              return res.render("claim.ejs", { msg: msg, url: url });
+            });
         } catch (error) {
-          return res.sendStatus(400)
+          return res.sendStatus(400);
         }
-        // Claim.fromCollection(ad)
-        //   .updateOne(
-        //     {
-        //       _id: val._id,
-        //     },
-        //     { submitted: true, upi: req.body.upi, viewsurl: req.body.url }
-        //   )
-        //   .then((v) => {
-        //     var msg = "Claim Registered";
-
-        //     return res.render("claim.ejs", { msg: msg ,url:url,green:true});
-        //   })
-        //   .catch((e) => {
-        //     var msg = "An Error Occured Please Try Again";
-        //   });
       } else {
         var msg = "Unique ID does not match any documents";
         return res.render("claim.ejs", { msg: msg, url: url });
@@ -184,12 +236,24 @@ router.post("/claim", (req, res) => {
     });
 });
 
+
+/**
+ * @route GET /:ad/claim
+ * @desc Get status of claim
+ * @access Public
+ */
 router.get("/status", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
   var url = req.originalUrl;
   res.render("status_check.ejs", { url: url, ad: ad });
 });
 
+
+/**
+ * @route POST /:ad/claim
+ * @desc Post UID to get status
+ * @access Public
+ */
 router.post("/status", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
   console.log(ad);
@@ -199,8 +263,17 @@ router.post("/status", (req, res) => {
       .findOne({ uid: req.body.uid })
       .then((val) => {
         if (val) {
-          console.log(val.submitted);
-          res.render("track.ejs", {});
+          var submitted=""
+          var verified=""
+          var payment=""
+          var msg=""
+          if(val.submitted  ) {submitted="active";msg="You claim has been submitted and is awaiting verification"}
+          if(val.submitted && val.verified ) {submitted="done";verified="active";msg="You claim has been verified and is awaiting payment"}
+       
+          if(val.payment ) {payment="active";verified="done";msg="Your payment has been proccessed .If you havent recieved it please contact us."}
+          
+         
+          res.render("track.ejs", {heading:"Status of your claim",submitted,verified:verified,payment:payment,msg:msg});
         } else {
           res.send("ID does not match any documents");
         }

@@ -5,7 +5,6 @@ var feedback = function (res) {
     document.querySelector(".status").classList.add("bg-success");
     document.getElementById("wait").innerHTML = "Uploaded Successfully";
     document.getElementById("wait").style.color = "green";
-
     document.getElementById("url").value = get_link;
   }
 };
