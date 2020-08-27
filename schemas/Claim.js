@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
+const mongoosePaginate = require('mongoose-paginate-v2');
 //Create a user model
 
 const ClaimSchema = new Schema({
@@ -51,5 +51,9 @@ const ClaimSchema = new Schema({
     default: false,
   },
 });
-
-module.exports = function ClaimConstructor()  { this.fromCollection = function(collection){return mongoose.model(collection, ClaimSchema)}};
+ClaimSchema.plugin(mongoosePaginate);
+module.exports = function ClaimConstructor() {
+  this.fromCollection = function (collection) {
+    return mongoose.model(collection, ClaimSchema);
+  };
+};
