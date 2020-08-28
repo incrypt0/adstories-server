@@ -201,22 +201,7 @@ console.log("begining");
         wmid: wmid,
         uid: uid,
       };
-      let newTemp = new Temp.fromCollection(ad)({
-        wmid: watermarkText,
-        uid: uid,
-      });
-      newTemp
-        .save()
-        .then((val) => {
-          console.log("hi" + val.toString());
-          return res.json(data);
-        })
-        .catch((e) => {
-          return res.json({
-            success: false,
-            msg: "Cannot generate download please try again later.",
-          });
-        });
+      return res.json(data);
     })
     .catch((e) => {
       var data = {
