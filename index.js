@@ -62,7 +62,8 @@ app.use("/:ad", adsRoute);
 app.get("/", (req, res) => {
   res.redirect("/adstories");
 });
-var port = process.env.PORT || 3000;
+
+var port = process.env.PORT || 8080;
 
 
 app.listen(port, () => {
