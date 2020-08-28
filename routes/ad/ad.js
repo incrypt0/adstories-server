@@ -54,7 +54,7 @@ router.post("/", (req, res) => {
     })
     .then((user) => {
       if (user) {
-        var msg = "Claim Registered";
+        var msg = `Already Registered for claim with UID : ${user.uid} `;
         return res.render("index.ejs", {
           msg: msg,
           ad: ad,
@@ -147,18 +147,18 @@ router.post("/", (req, res) => {
 // Watermark and Unique ID Generation
 router.post("/watermark", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
-  var uid = req.body.uid;
-  var wmid = req.body.wmid;
+
   //
   // Generate unique ID's
-  var watermarkText = shortid.generate();
-  var uid = shortid.generate();
+  var wmid = "";
+  var uid = "";
   var generated = false;
+
   var uidGenerator = () => {
     console.log("running uidGenerator");
+    wmid = shortid.generate();
+    uid = shortid.generate();
     if (!generated) {
-      uid = shortid.generate();
-      watermarkText = shortid.generate();
       Claim.fromCollection(ad)
         .findOne({ uid: uid })
         .then((val) => {
@@ -175,7 +175,7 @@ router.post("/watermark", (req, res) => {
                   console.log("wmid exists");
                   uidGenerator();
                 } else {
-                  console.log("Ellam Set");
+                  console.log("Final Unique ID Generated");
                   generated = true;
                 }
                 return;
@@ -183,19 +183,19 @@ router.post("/watermark", (req, res) => {
           }
           return;
         });
-      return;
     }
+    return;
   };
 
   uidGenerator();
 
   // Watermark the ad
-  waterMarkImage("public/images/poster.jpg", watermarkText)
+  waterMarkImage("public/images/poster.jpg", wmid)
     .then((buf) => {
       var data = {
         success: true,
         buffer: buf,
-        wmid: watermarkText,
+        wmid: wmid,
         uid: uid,
       };
       console.log(buf.substring(0, 25));
@@ -243,7 +243,9 @@ router.post("/claim", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
 
   console.log(req.body);
-
+  if(req.body.uid){
+    req.body.uid = req.body.uid.trim()
+  }
   // Find the claim if it exists
   Claim.fromCollection(ad)
     .findOne({ uid: req.body.uid })
@@ -338,6 +340,7 @@ router.post("/status", (req, res) => {
   console.log(ad);
   var url = req.originalUrl;
   if (req.body.uid) {
+    req.body.uid=req.body.uid.trim()
     Claim.fromCollection(ad)
       .findOne({ uid: req.body.uid })
       .then((val) => {
@@ -433,36 +436,33 @@ router.get("/page", (req, res) => {
 router.post("/update", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
   if (req.body) {
-    console.log(req.body.dbid)
+    console.log(req.body.dbid);
     Claim.fromCollection(ad)
       .findById(req.body.dbid)
       .then((doc) => {
-        
-        
-          doc.submitted = req.body.submitted??doc.submitted;
-    
-          doc.verified = req.body.verified??doc.verified;
-       
-          doc.payment = req.body.verified??doc.payment;
-       
+        doc.submitted = req.body.submitted ?? doc.submitted;
+
+        doc.verified = req.body.verified ?? doc.verified;
+
+        doc.payment = req.body.verified ?? doc.payment;
+
         doc
           .save()
           .then((e) => {
-            console.log("blah")
+            console.log("blah");
             console.log(e);
-            console.log("blah")
+            console.log("blah");
             return res.json({
               success: true,
-              submitted:e.submitted,
-              verified:e.verified,
-              payment:e.payment,
-              uid:e.uid,
+              submitted: e.submitted,
+              verified: e.verified,
+              payment: e.payment,
+              uid: e.uid,
             });
           })
           .catch((e) => {
             return res.json({
               success: false,
-              
             });
           });
       })
