@@ -189,25 +189,35 @@ console.log("begining");
     return;
   };
 
-  // uidGenerator();
+  uidGenerator();
 
   // Watermark the ad
   waterMarkImage("public/images/poster.jpg", wmid)
     .then((buf) => {
       console.log("watermarked");
-      var data = {
+      var data;
+      if(buf){
+      data = {
         success: true,
         buffer: buf,
         wmid: wmid,
         uid: uid,
       };
+    }else{
+      data={
+        success:false
+      }
+    }
+      console.log("watermarked");
       return res.json(data);
     })
     .catch((e) => {
+      console.log(e);
       var data = {
         success: false,
         msg: "Cannot generate download please try again later.",
       };
+      res.json(data);
     });
 });
 
