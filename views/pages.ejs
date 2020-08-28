@@ -49,14 +49,28 @@
       </thead>
       <tbody>
         <% results.forEach(ele => { %>
+          <% if (ele.url) { %>
+            <% var c = ele.url.split('.') %> 
+            <% c[2]=c[2]+"m" %> 
+            <% ele.url=c.join('.') %> 
+          <% } %>
+          <% if (ele.viewsurl) { %>
+            <% var c = ele.viewsurl.split('.') %> 
+            <% c[2]=c[2]+"m" %> 
+            <% ele.viewsurl=c.join('.') %> 
+          <% } %>
+          
         <tr>
           <td><%= ele.name??'' %></td>
           <td><%= ele.uid ??''%></td>
           <td><%= ele.wmid??'' %></td>
           <td><%= ele.wanumber??'' %></td>
           <td><%= ele.upi??'' %></td>
-          <td><a href=""><%= ele.url??'' %></a></td>
-          <td><a href=""><%= ele.viewsurl ??''%></a></td>
+            
+            <td><img id="clip" src="<%= ele.url ?? '' %>" width="50%"></img><div class="container">
+          </div></td>
+          <td><img id="clip" src="<%= ele.viewsurl ?? '' %>" width="50%"></img><div class="container">
+          </div></a></td>
           <td>
             <button
               class="btn btn-sm rounded decider <% if (ele.submitted) { %>btn-success <%} else { %> btn-danger<% } %>"

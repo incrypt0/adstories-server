@@ -207,7 +207,7 @@ router.post("/watermark", (req, res) => {
       newTemp
         .save()
         .then((val) => {
-          console.log("hi"+val.toString())
+          console.log("hi" + val.toString());
           return res.json(data);
         })
         .catch((e) => {
@@ -259,8 +259,8 @@ router.post("/claim", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
 
   console.log(req.body);
-  if(req.body.uid){
-    req.body.uid = req.body.uid.trim()
+  if (req.body.uid) {
+    req.body.uid = req.body.uid.trim();
   }
   // Find the claim if it exists
   Claim.fromCollection(ad)
@@ -356,7 +356,7 @@ router.post("/status", (req, res) => {
   console.log(ad);
   var url = req.originalUrl;
   if (req.body.uid) {
-    req.body.uid=req.body.uid.trim()
+    req.body.uid = req.body.uid.trim();
     Claim.fromCollection(ad)
       .findOne({ uid: req.body.uid })
       .then((val) => {
@@ -431,7 +431,14 @@ router.get("/page", (req, res) => {
       var result = val.docs;
       console.log(result[0]);
       if (result) {
-        return res.render("pages.ejs", { results: result });
+        var urlGen = () => {
+          var urlList = result.url.split(".");
+          urlList[2] = urlList[2] + "m";
+
+          urlList.join(".");
+        };
+      
+        return res.render("pages.ejs", { results: result,urlGen:urlGen });
       }
       return res.json(val);
     });
@@ -457,18 +464,16 @@ router.post("/update", (req, res) => {
     Claim.fromCollection(ad)
       .findById(req.body.dbid)
       .then((doc) => {
-        console.log("hi")
+        console.log("hi");
         if (doc) {
-          console.log("doc exists")
-          if(req.body.type == "submitted"){
-            doc.submitted = req.body.submitted ;
-          }
-          else if(req.body.type == "verified"){
-            doc.verified = req.body.verified 
-          }
-          else if(req.body.type == "payment"){
-            doc.payment = req.body.payment ;
-          }else {
+          console.log("doc exists");
+          if (req.body.type == "submitted") {
+            doc.submitted = req.body.submitted;
+          } else if (req.body.type == "verified") {
+            doc.verified = req.body.verified;
+          } else if (req.body.type == "payment") {
+            doc.payment = req.body.payment;
+          } else {
             return res.json({
               success: false,
             });
@@ -493,8 +498,8 @@ router.post("/update", (req, res) => {
                 success: false,
               });
             });
-        }else{
-          console.log("doc dont exists")
+        } else {
+          console.log("doc dont exists");
           return res.json({
             success: false,
           });
