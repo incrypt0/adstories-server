@@ -149,7 +149,7 @@ router.post("/", (req, res) => {
 // Watermark and Unique ID Generation
 router.post("/watermark", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
-
+console.log("begining");
   //
   // Generate unique ID's
   var wmid = "";
@@ -194,6 +194,7 @@ router.post("/watermark", (req, res) => {
   // Watermark the ad
   waterMarkImage("public/images/poster.jpg", wmid)
     .then((buf) => {
+      console.log("watermarked");
       var data = {
         success: true,
         buffer: buf,
