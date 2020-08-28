@@ -56,7 +56,7 @@ router.post("/", (req, res) => {
     })
     .then((user) => {
       if (user) {
-        var msg = "Claim Registered";
+        var msg = `Already Registered for claim with UID : ${user.uid} `;
         return res.render("index.ejs", {
           msg: msg,
           ad: ad,
@@ -149,52 +149,55 @@ router.post("/", (req, res) => {
 // Watermark and Unique ID Generation
 router.post("/watermark", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
+
   //
   // Generate unique ID's
-  var watermarkText = shortid.generate();
-  var uid = shortid.generate();
-  // var generated = false;
-  // var uidGenerator = () => {
-  //   console.log("running uidGenerator");
+  var wmid = "";
+  var uid = "";
+  var generated = false;
 
-    
-  //     Claim.fromCollection(ad)
-  //       .findOne({ uid: uid })
-  //       .then((val) => {
-  //         console.log("Checking if uid exists");
-  //         if (val) {
-  //           console.log("uid exists");
-  //           uidGenerator();
-  //         } else {
-  //           Claim.fromCollection(ad)
-  //             .findOne({ wmid: wmid })
-  //             .then((val) => {
-  //               console.log("Checking if wmid exists");
-  //               if (val) {
-  //                 console.log("wmid exists");
-  //                 uidGenerator();
-  //               } else {
-  //                 console.log("Ellam Set");
-  //                 generated = true;
-  //               }
-  //               return;
-  //             });
-  //         }
-  //         return;
-  //       });
-  //     return;
-    
-  // };
+  var uidGenerator = () => {
+    console.log("running uidGenerator");
+    wmid = shortid.generate();
+    uid = shortid.generate();
+    if (!generated) {
+      Claim.fromCollection(ad)
+        .findOne({ uid: uid })
+        .then((val) => {
+          console.log("Checking if uid exists");
+          if (val) {
+            console.log("uid exists");
+            uidGenerator();
+          } else {
+            Claim.fromCollection(ad)
+              .findOne({ wmid: wmid })
+              .then((val) => {
+                console.log("Checking if wmid exists");
+                if (val) {
+                  console.log("wmid exists");
+                  uidGenerator();
+                } else {
+                  console.log("Final Unique ID Generated");
+                  generated = true;
+                }
+                return;
+              });
+          }
+          return;
+        });
+    }
+    return;
+  };
 
   // uidGenerator();
 
   // Watermark the ad
-  waterMarkImage("public/images/poster.jpg", watermarkText)
+  waterMarkImage("public/images/poster.jpg", wmid)
     .then((buf) => {
       var data = {
         success: true,
         buffer: buf,
-        wmid: watermarkText,
+        wmid: wmid,
         uid: uid,
       };
       let newTemp = new Temp.fromCollection(ad)({
@@ -256,7 +259,9 @@ router.post("/claim", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
 
   console.log(req.body);
-
+  if(req.body.uid){
+    req.body.uid = req.body.uid.trim()
+  }
   // Find the claim if it exists
   Claim.fromCollection(ad)
     .findOne({ uid: req.body.uid })
@@ -351,6 +356,7 @@ router.post("/status", (req, res) => {
   console.log(ad);
   var url = req.originalUrl;
   if (req.body.uid) {
+    req.body.uid=req.body.uid.trim()
     Claim.fromCollection(ad)
       .findOne({ uid: req.body.uid })
       .then((val) => {
