@@ -217,7 +217,7 @@ console.log("begining");
         success: false,
         msg: "Cannot generate download please try again later.",
       };
-      res.json(data);
+      res.json({data:data});
     });
 });
 
