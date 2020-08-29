@@ -29,6 +29,7 @@ app.use(express.static(__dirname + "/public"));
 
 // Mongo URI
 const db = require("./config/keys").mongoURI;
+console.log(db)
 
 // Connect to mongoose
 mongoose
