@@ -98,7 +98,8 @@ const waterMarkImage = (data) => {
       // console.log(uid + " : " + resp.data.uid);
       // console.log(wmid);
       console.log("reached just before download base64");
-      downloadBase64File(resp.data.buffer, "ad.jpg");
+      // downloadBase64File(resp.data.buffer, "ad.jpg");
+      watermarkPrinter(wmid,uid);
       }
     })
     .catch((err) => {
@@ -167,6 +168,30 @@ function createUidsInput(uid, wmuid) {
   }
 }
 
+
+
+watermarkPrinter = (watermark,uid) => {
+  console.log("watermarPrinter called")
+  // Config
+  var img = document.getElementById("baseImg");
+  var canvas = document.getElementById("waterMarkCanvas");
+  var ctx = canvas.getContext("2d");
+  canvas.width = img.width;
+  canvas.height = img.height;
+
+  // Drawing part
+  ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+  ctx.font = "60px Ariel";
+  ctx.fillStyle = "white";
+  ctx.fillText(watermark, 80, 80);
+
+  // Download link
+  var a = document.createElement("a");
+  a.download = `${uid}.png`;
+  var dataUrl = canvas.toDataURL("image/png");
+  a.href = dataUrl;
+  a.click()
+};
 // // ==================DEV LOGS================================= //
 // // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
 // // Tests
