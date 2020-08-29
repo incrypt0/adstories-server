@@ -1,0 +1,326 @@
+@font-face{
+    font-family: 'Axiforma';
+    src: url(../fonts/Axiforma\ Light.otf);
+    font-style: normal;
+    font-weight: 200;
+}
+
+@font-face{
+    font-family: 'Axiforma';
+    src: url(../fonts/Axiforma\ Light\ Italic.otf);
+    font-style: italic;
+    font-weight: 200;
+}
+
+@font-face{
+    font-family: 'Axiforma';
+    src: url(../fonts/Axiforma\ Bold\ Italic.otf);
+    font-style: italic;
+    font-weight: 600;
+}
+
+@font-face{
+    font-family: 'Axiforma';
+    src: url(../fonts/Axiforma\ Thin.otf);
+    font-style: normal;
+    font-weight: 100;
+}
+
+@font-face{
+    font-family: 'Axiforma';
+    src: url(../fonts/Axiforma\ Bold.otf);
+    font-style: normal;
+    font-weight: 600;
+}
+
+
+
+*{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body{
+    text-align: center;
+    background-color: #f3f3f3;
+    /* background-image: url(../images/bg2\ \(1\).jpg);
+    background-size: 100%;    
+    background-repeat: no-repeat; */
+
+    align-items: center;
+    color: white;
+}
+h5{
+    font-family: Axiforma;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 1em;
+    text-align: center;
+    color: white;
+}
+h4{
+    font-family: Axiforma;
+    font-style: normal;
+    font-weight: 200;
+    font-size: 1em;
+    text-align: center;
+    color: white;
+}
+
+
+header div{
+    /* border-bottom-right-radius: 27px;
+    border-bottom-left-radius: 27px; */
+    box-shadow: 0px 3px 6px rgba(149, 149, 149, 0.1);
+}
+
+.logo img{
+    padding-top: 1%;
+    padding-bottom: 1%;
+    width: 100%;
+    padding-left: 40%;
+    padding-right: 40%;
+
+}
+
+.section{
+    margin: 10%;
+    /* margin-top: 5%; */
+    /* margin-left: 43%;
+    margin-right: 30%; */
+    text-align: center;
+    display: inline-block;
+    justify-content: center;
+    align-items: center;
+    width: 35%;
+
+}
+
+header{
+
+    justify-content: center;
+    align-items: center;
+}
+
+div a{
+    text-decoration: none;
+    color: #707070;
+    font-family: Axiforma;
+    font-weight: 600;
+}
+
+.join h3{ 
+    padding-left: 0%;
+    padding-right: 0%;
+    padding-top: 6%;
+    text-align: initial;
+    color: grey;
+    font-family: Axiforma;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+.join h2{
+    text-align: initial;
+    color: grey;
+    padding-top: 3%;
+    font-family: Axiforma;
+    font-weight: 200;
+    font-size: 16px;
+}    
+
+.join p{
+    font-family: Axiforma;
+    font-weight: 200;
+    margin-top: 0%;
+    font-size: 12px;
+}
+
+#tick{
+    border-color: #41bf59;
+}
+
+hr{
+    margin-top: 10%;
+}
+
+.paytm-logo{
+    display: flex;
+    text-align: initial;
+    padding-top: 4%;
+    padding-left: 15%;
+    padding-right: 15%;
+}
+#paytm{
+    width: 50px;
+    align-items: left;
+}
+
+.vertical{
+    border-left: 1px solid grey;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.paytm-logo p {
+    font-size: 6px;
+}
+
+.instruction{
+    padding-left: 0%;
+    padding-right: 0%;
+    padding-top: 6%;
+    text-align: initial;
+    display: block;
+}
+
+.display{
+    display: flex;
+    margin: 10px 0 10px 0;
+}
+
+.instruction img{
+    width: 50px;
+    height: auto;
+    border: 2px solid #c6c6c6;
+    border-radius: 50%;
+}
+
+div p {
+    text-align: initial;
+    color: grey;
+    font-family: Axiforma;
+    font-size: 15px;
+    font-weight: 200;
+    margin-top: 5px;
+}
+.form-info{
+    font-size: 5px;
+    font-style: italic;
+    margin-top: -15px;
+}
+
+.form-content{
+    padding-left: 6%;
+    display: grid;
+
+}
+
+#gradient{
+    border: double 2px transparent;
+    border-radius: 50%;
+    background-image: linear-gradient(white, white), radial-gradient(circle at top left,  rgba(239,80,81,1),rgba(224,45,116,1), rgba(156,107,170,1));
+    background-origin: border-box;
+    background-clip: content-box, border-box;
+}
+
+/* .instruction .icon{
+    width: 20px;
+    height: auto;
+    border: 2px;
+    border-radius: 50%;
+    border-color: grey
+} */
+
+.btn{
+    text-align: center;
+    border: 0;
+    border-radius: 5px;
+    background-color:#FAFAFA;
+    padding: 14px 28px;
+    font-size: 11px;
+    cursor: pointer;
+    box-shadow: 3px 5px 6px rgba(149,149,149,0.4);
+    font-family: Axiforma;
+    margin: 10px;
+
+}
+.button{
+    padding-left: 0%;
+    padding-right: 0%;
+    display: grid;
+    text-align: initial;
+}
+
+
+.claim{
+    margin-bottom: 5%;
+    background: rgb(239,80,81);
+    background: linear-gradient(138deg, rgba(239,80,81,1) 0%, rgba(224,45,116,1) 60%, rgba(156,107,170,1) 100%);
+}
+
+ /* .footer{
+    padding-top: 50px;
+}  */
+
+.footer img{
+    width: 120px;
+    height: auto;  
+    /* padding-top: 400px;   */
+}
+.footer-img img{
+    margin-top: 5%;
+    width: 100%;
+    height: auto;
+}
+
+p{
+    color:black;
+    font-family: Axiforma;
+    font-size: 10px;
+    width: 200px;
+
+}
+
+@media screen and (max-width:1000px){
+
+    .logo img{
+        width: 100%;
+        padding-left: 23%;
+        padding-right: 23%;
+    }
+
+    .section{
+        width: 100%;
+        display: block;
+        margin: 1%;
+        text-align: center;
+        padding-top: 10%;
+    }
+    .btn{
+        width: 100%;
+    }
+    .button{
+        padding-left: 15%;
+        padding-right: 15%;
+    }
+
+    .footer img{  
+        width: 100px;
+        height: auto;
+        /* padding-top: 50%;   */
+    }
+
+    p{
+        font-size: 6px;
+    }
+    .claim{
+        margin-bottom: 0%;
+    }
+    .instruction{
+        padding-left: 15%;
+        padding-right: 15%;
+        padding-top: 6%;
+        text-align: initial;
+        display: block;
+    }
+
+
+    .join{
+    padding-left: 15%;
+    padding-right: 15%;
+    } 
+
+
+}
