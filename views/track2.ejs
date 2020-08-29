@@ -3,6 +3,7 @@
 <head>
 
     <%- include ("./partials/head") %>
+ 
 </head>
 <body>
     <header>
@@ -19,14 +20,20 @@
 
         <div class="join">
            <h3> Claim Status</h3> 
-           <h2> Akshay Jyothis</h2>
-           <p> #sdYj23</p>
+           <h2> <%= name %> </h2>
+           <p> <%= uid %> </p>
         </div>
 
         <div class="instruction">
             <div class="display">
                 <div class="icons">
-                    <img src="images/tick.png" alt="" id="tick">
+                    
+                    <% if (submitted) { %>
+                        <img src="images/tick.png" alt="" id="tick" >
+                     <% } else { %>
+                        <img src="images/timer.png" alt="" >
+                    <% } %>
+                   
                 </div>
                 <div class="form-content">
                     <p >fill the form</p>                  
@@ -34,18 +41,35 @@
             </div>
             <div class="display">
                 <div class="icons">
-                    <img src="images/timer.png" alt="">
+                    <% if (verified) { %>
+                        <img src="images/tick.png" alt="" id="tick" >
+                     <% } else { %>
+                        <img src="images/timer.png" alt="" >
+                    <% } %>
                 </div>
                 <div class="form-content">
-                    <p >drop your first AdStory</p>
+                    <% if (verified) { %>
+                        <p >Screenshot verified</p>
+                     <% } else { %>
+                        <p >Waiting for verification</p>
+                    <% } %>
+                    
                 </div>
             </div>
             <div class="display">
                 <div class="icons">
-                    <img src="images/timer.png" alt="">
+                    <% if (payment) { %>
+                        <img src="images/tick.png" alt="" id="tick" >
+                     <% } else { %>
+                        <img src="images/timer.png" alt="" >
+                    <% } %>
                 </div>
                 <div class="form-content">
-                    <p >start posting AdStories</p>
+                    <% if (verified) { %>
+                        <p >Payment - Waiting for verification</p>
+                     <% } else { %>
+                        <p >Payment proccessed</p>
+                    <% } %>
                 </div>
             </div>
             <!-- <div class="display">

@@ -4,7 +4,7 @@ switch (env) {
   case "dev":
     // Setup development config
     // dotenv config
-    port=3000;
+    port = 3000;
     const dotenv = require("dotenv");
     dotenv.config();
     console.log("Running in dev mode");
@@ -13,7 +13,7 @@ switch (env) {
     // Setup production config
     break;
 }
- 
+
 const express = require("express");
 const { response } = require("express");
 const app = express();
@@ -31,7 +31,7 @@ app.use(express.static(__dirname + "/public"));
 
 // Mongo URI
 const db = require("./config/keys").mongoURI;
-console.log(db)
+console.log(db);
 
 // Connect to mongoose
 mongoose
@@ -56,8 +56,16 @@ app.use(
 
 // Routes
 app.use("/claim", claimAmountRoute);
-app.get("/track", (req, res) => {
-  res.render("track2.ejs",{heading:"Claim Status",msg:"Your claim has been verified and payment is under process",submitted:"done",verified:"active",payment:"normal"});
+app.get("/track_test", (req, res) => {
+  res.render("track2.ejs", {
+    heading: "Claim Status",
+    msg: "Your claim has been verified and payment is under process",
+    submitted: true,
+    verified: true,
+    payment: false,
+    name: "Hari R U",
+    uid: "ABCDEFG",
+  });
 });
 app.use("/:ad", adsRoute);
 
@@ -65,9 +73,6 @@ app.use("/:ad", adsRoute);
 app.get("/", (req, res) => {
   res.redirect("/adstories");
 });
-
-
-
 
 app.listen(port, () => {
   console.log("listening on http://localhost:" + port);

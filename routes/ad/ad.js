@@ -149,7 +149,7 @@ router.post("/", (req, res) => {
 // Watermark and Unique ID Generation
 router.post("/watermark", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
-console.log("begining");
+  console.log("begining");
   //
   // Generate unique ID's
   var wmid = "";
@@ -196,18 +196,18 @@ console.log("begining");
     .then((buf) => {
       console.log("watermarked");
       var data;
-      if(buf){
-      data = {
-        success: true,
-        buffer: buf,
-        wmid: wmid,
-        uid: uid,
-      };
-    }else{
-      data={
-        success:false
+      if (buf) {
+        data = {
+          success: true,
+          buffer: buf,
+          wmid: wmid,
+          uid: uid,
+        };
+      } else {
+        data = {
+          success: false,
+        };
       }
-    }
       console.log("watermarked");
       return res.json(data);
     })
@@ -217,7 +217,7 @@ console.log("begining");
         success: false,
         msg: "Cannot generate download please try again later.",
       };
-      res.json({data:data});
+      res.json({ data: data });
     });
 });
 
@@ -357,32 +357,19 @@ router.post("/status", (req, res) => {
       .findOne({ uid: req.body.uid })
       .then((val) => {
         if (val) {
-          var submitted = "";
-          var verified = "";
-          var payment = "";
+          var submitted = req.body.submitted;
+          var verified = req.body.verified;
+          var payment = req.body.payment;
           var msg = "";
-          if (val.submitted) {
-            submitted = "active";
-            msg = "You claim has been submitted and is awaiting verification";
-          }
-          if (val.submitted && val.verified) {
-            submitted = "done";
-            verified = "active";
-            msg = "You claim has been verified and is awaiting payment";
-          }
-
-          if (val.payment) {
-            payment = "active";
-            verified = "done";
-            msg =
-              "Your payment has been proccessed .If you havent recieved it please contact us.";
-          }
+         
 
           res.render("track.ejs", {
             heading: "Status of your claim",
-            submitted,
+            submitted:submitted,
             verified: verified,
             payment: payment,
+            uid:val.uid??'',
+            name:val.name??'',
             msg: msg,
           });
         } else {
@@ -433,8 +420,8 @@ router.get("/page", (req, res) => {
 
           urlList.join(".");
         };
-      
-        return res.render("pages.ejs", { results: result,urlGen:urlGen });
+
+        return res.render("pages.ejs", { results: result, urlGen: urlGen });
       }
       return res.json(val);
     });
