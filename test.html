@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <img src="" id="mirror" class="canvas__mirror" />
+    <a href="#" class="button" id="btn-download">Download</a>
+  </body>
+  <script>
+    var link = document.createElement("a");
+    var canvas = document.createElement("canvas");
+    canvas.width = mirror.width = 200;
+    canvas.height = mirror.width = 200;
+    var ctx = canvas.getContext("2d");
+    ctx.font = "30px Arial";
+    ctx.fillText("Hello World", 10, 50);
+
+    var button = document.getElementById("btn-download");
+    button.addEventListener("click", function (e) {
+      var dataURL = canvas.toDataURL("image/png");
+      button.href = dataURL;
+    });
+  </script>
+</html>

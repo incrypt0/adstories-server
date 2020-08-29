@@ -13,6 +13,7 @@ const animation = document.querySelector(".animation");
 // Other required variables
 const uri = window.location.href;
 var downloadLink = document.createElement("a");
+var canvas = document.createElement("canvas");
 downloadLink.setAttribute("id", "download-ad");
 
 // Booleans

@@ -1,8 +1,10 @@
 var env = process.argv[2] || "dev";
+var port = process.env.PORT || 8080;
 switch (env) {
   case "dev":
     // Setup development config
     // dotenv config
+    port=3000;
     const dotenv = require("dotenv");
     dotenv.config();
     console.log("Running in dev mode");
@@ -64,7 +66,7 @@ app.get("/", (req, res) => {
   res.redirect("/adstories");
 });
 
-var port = process.env.PORT || 8080;
+
 
 
 app.listen(port, () => {
