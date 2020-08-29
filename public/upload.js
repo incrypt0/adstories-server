@@ -30,10 +30,6 @@ document.getElementById("download").addEventListener("click", function () {
     runLoaderAnimation();
     clicked = !clicked;
 
-    // // ==================DEV LOGS================================= //
-    // console.log(wanumber.value.length !== 10 && name.value.length == 0);
-    // console.log(wanumber.value.length + " " + name.value.length);
-
     if (wanumber.value.length !== 10 && name.value.length == 0) {
       console.log("IN");
       error.innerText =
@@ -48,9 +44,6 @@ document.getElementById("download").addEventListener("click", function () {
         name: name.value,
         wanumber: wanumber.value,
       };
-      // // ==================DEV LOGS================================= //
-      //       console.log("data is :");
-      //       console.log(data);
 
       waterMarkImage(data);
     }
@@ -91,15 +84,13 @@ const waterMarkImage = (data) => {
   })
     .then((resp) => {
       console.log(resp.data);
-      if(resp.data.success){
-      uid = resp.data.uid;
-      wmid = resp.data.wmid;
-      // // ==================DEV LOGS================================= //
-      // console.log(uid + " : " + resp.data.uid);
-      // console.log(wmid);
-      console.log("reached just before download base64");
-      // downloadBase64File(resp.data.buffer, "ad.jpg");
-      watermarkPrinter(wmid,uid);
+      if (resp.data.success) {
+        uid = resp.data.uid;
+        wmid = resp.data.wmid;
+       
+        console.log("reached just before download base64");
+        // downloadBase64File(resp.data.buffer, "ad.jpg");
+        watermarkPrinter(wmid, uid);
       }
     })
     .catch((err) => {
@@ -111,10 +102,6 @@ const waterMarkImage = (data) => {
 // Function Which downloads a base64 file
 function downloadBase64File(base64Data, fileName) {
   clicked = true;
-
-  // // ==================DEV LOGS================================= //
-  // console.log("clicked inside downloadb64: " + clicked);
-
   downloadLink.href = base64Data;
   downloadLink.download = fileName;
 
@@ -130,8 +117,7 @@ function downloadBase64File(base64Data, fileName) {
   }
 }
 
-// SubmitFOrm
-
+// SubmitForm
 claimBtn.addEventListener("click", (e) => {
   runLoaderAnimation();
   e.preventDefault();
@@ -168,10 +154,9 @@ function createUidsInput(uid, wmuid) {
   }
 }
 
-
-
-watermarkPrinter = (watermark,uid) => {
-  console.log("watermarPrinter called")
+// Watermark Worker
+watermarkPrinter = (watermark, uid) => {
+  console.log("watermarPrinter called");
   // Config
   var img = document.getElementById("baseImg");
   var canvas = document.getElementById("waterMarkCanvas");
@@ -190,22 +175,5 @@ watermarkPrinter = (watermark,uid) => {
   a.download = `${uid}.png`;
   var dataUrl = canvas.toDataURL("image/png");
   a.href = dataUrl;
-  a.click()
+  a.click();
 };
-// // ==================DEV LOGS================================= //
-// // +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++=
-// // Tests
-// document.getElementById("download").addEventListener("click", function () {
-//   console.log("Clicked Download");
-//   var data = {
-//     name: "Krishnanand",
-//     wanumber: "7034320441",
-//   };
-//   console.log("data is :");
-//   console.log(data);
-//   waterMarkImage(data);
-// })
-// // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-
