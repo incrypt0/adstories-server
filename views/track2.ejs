@@ -65,10 +65,11 @@
                     <% } %>
                 </div>
                 <div class="form-content">
-                    <% if (verified) { %>
-                        <p >Payment - Waiting for verification</p>
-                     <% } else { %>
+                    <% if (payment) { %>
                         <p >Payment proccessed</p>
+                     <% } else { %>
+                        
+                        <p >Payment - Waiting for verification</p>
                     <% } %>
                 </div>
             </div>

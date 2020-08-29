@@ -357,9 +357,9 @@ router.post("/status", (req, res) => {
       .findOne({ uid: req.body.uid })
       .then((val) => {
         if (val) {
-          var submitted = req.body.submitted;
-          var verified = req.body.verified;
-          var payment = req.body.payment;
+          var submitted = val.submitted;
+          var verified = val.verified;
+          var payment = val.payment;
           var msg = "";
          
 
