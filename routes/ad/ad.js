@@ -363,7 +363,7 @@ router.post("/status", (req, res) => {
           var msg = "";
          
 
-          res.render("track.ejs", {
+          res.render("track2.ejs", {
             heading: "Status of your claim",
             submitted:submitted,
             verified: verified,
