@@ -35,27 +35,29 @@ var adList = ["adstories", "santoor", "chandrika"];
 //   else res.send("404 page note found");
 // });
 
-// 
+//
 router.get("/", (req, res) => {
   console.log(req.originalUrl);
   var ad = req.originalUrl.split("/")[1];
   // if (adList.includes(ad)) res.render("index.ejs", { ad: ad });
   // else res.send("404 page note found");
-  Ads.findOne({name:ad}).then((v)=>{
-    if(v)return res.render("index.ejs", { ad: ad });
-    else return res.render("msg.ejs", {
-      success: true,
-      msg: "404 not found",
-      heading: "",
+  Ads.findOne({ name: ad })
+    .then((v) => {
+      if (v) return res.render("index.ejs", { ad: ad });
+      else
+        return res.render("msg.ejs", {
+          success: true,
+          msg: "404 not found",
+          heading: "",
+        });
+    })
+    .catch((e) => {
+      return res.render("msg.ejs", {
+        success: true,
+        msg: "An Error Occured Please Try Again",
+        heading: "",
+      });
     });
-    
-  }).catch((e)=>{
-    return res.render("msg.ejs", {
-      success: true,
-      msg: "An Error Occured Please Try Again",
-      heading: "",
-    });
-  })
 });
 
 //
@@ -180,71 +182,113 @@ router.post("/watermark", async (req, res) => {
   var wmid = "";
   var uid = "";
   var generated = false;
-
+  var i = 0;
+  var data={
+    success:false,
+  };
+  // wmid = "hi";
+  // uid = "hi";
   var uidGenerator = async () => {
     console.log("running uidGenerator");
 
     wmid = await nanoid();
     uid = await nanoid();
+    console.log(i);
     if (!generated) {
-      Claim.fromCollection(ad)
-        .findOne({ uid: uid })
-        .then((val) => {
-          console.log("Checking if uid exists");
-          if (val) {
-            console.log("uid exists");
-            uidGenerator();
-          } else {
-            Claim.fromCollection(ad)
-              .findOne({ wmid: wmid })
-              .then((val) => {
-                console.log("Checking if wmid exists");
-                if (val) {
-                  console.log("wmid exists");
-                  uidGenerator();
-                } else {
-                  console.log("Final Unique ID Generated");
-                  generated = true;
-                }
-                return;
-              });
-          }
-          return;
-        });
-    }
-    return;
-  };
+    if (i < 10) {
+      i++;
 
-  uidGenerator();
-
-  // Watermark the ad
-  waterMarkImage("public/images/poster.jpg", wmid)
-    .then((buf) => {
-      console.log("watermarked");
-      var data;
-      if (buf) {
-        data = {
-          success: true,
-          buffer: buf,
-          wmid: wmid,
-          uid: uid,
-        };
-      } else {
-        data = {
-          success: false,
-        };
-      }
-      console.log("watermarked");
-      return res.json(data);
-    })
-    .catch((e) => {
-      console.log(e);
+      
+     
+        
+        Claim.fromCollection(ad)
+          .findOne({ uid: uid })
+          .then((val) => {
+            console.log("Checking if uid exists");
+            if (val) {
+              console.log("uid exists");
+             
+              return uidGenerator();
+            } else {
+              Claim.fromCollection(ad)
+                .findOne({ wmid: wmid })
+                .then((val) => {
+                  console.log("Checking if wmid exists");
+                  if (val) {
+                    console.log("wmid exists");
+                    return uidGenerator();
+                  } else {
+                    console.log("Final Unique ID Generated");
+                    generated = true;
+                    data = {
+                      success: true,
+                      wmid: wmid,
+                      uid: uid,
+                    };
+                    generated=true
+                    console.log("________________2________________")
+                    return res.json(data)
+                  }
+                })
+                .catch((e) => {
+                  data = {
+                    success: false,
+                  };
+                  console.log("________________1________________")
+                  return res.json(data)
+                });
+            }
+        
+          });
+      
+    } else {
+      console.log("exceeded 10");
       var data = {
         success: false,
-        msg: "Cannot generate download please try again later.",
       };
-      res.json({ data: data });
-    });
+      console.log("________________3________________")
+      return res.json(data)
+    }
+  }else{
+    var data = {
+      success: false,
+    };
+    console.log("________________6________________")
+      return res.json(data)
+  }
+   
+  };
+
+  await uidGenerator();
+
+  // Watermark the ad
+  // waterMarkImage("public/images/poster.jpg", wmid)
+  //   .then((buf) => {
+  //     console.log("watermarked");
+  //     var data;
+  //     if (buf) {
+  //       data = {
+  //         success: true,
+  //         buffer: buf,
+  //         wmid: wmid,
+  //         uid: uid,
+  //       };
+  //     } else {
+  //       data = {
+  //         success: false,
+  //       };
+  //     }
+  //     console.log("watermarked");
+  //     return res.json(data);
+  //   })
+  //   .catch((e) => {
+  //     console.log(e);
+  //     var data = {
+  //       success: false,
+  //       msg: "Cannot generate download please try again later.",
+  //     };
+  //     return res.json({ data: data });
+  //   });
 });
 
 //
@@ -304,8 +348,8 @@ router.post("/claim", (req, res) => {
         //
         //
         //
-        var alreadySubmitted=doc.submitted;
-        
+        var alreadySubmitted = doc.submitted;
+
         //
         //
         //
