@@ -37,7 +37,7 @@ var adList = ["adstories", "santoor", "chandrika"];
 
 //
 router.get("/", (req, res) => {
-  console.log(req.originalUrl);
+  console.log(`get request into ${req.originalUrl}`);
   var ad = req.originalUrl.split("/")[1];
 
   res.render("index.ejs", { ad: ad });
@@ -84,7 +84,7 @@ router.post("/", (req, res) => {
           var ad = req.originalUrl.split("/")[1];
 
           if (user) {
-            console.log(ad + "pwoliye4");
+            
             var msg = "Already Registered for claim";
             return res.render("index.ejs", {
               ad: ad,
@@ -97,7 +97,7 @@ router.post("/", (req, res) => {
           // Create new Claim
           let newClaim;
           try {
-            console.log(ad + "pwoliye5");
+           
             newClaim = new Claim.fromCollection(ad)({
               name: req.body.name,
               wanumber: req.body.wanumber,
@@ -120,7 +120,6 @@ router.post("/", (req, res) => {
           newClaim
             .save()
             .then((claim) => {
-              console.log("ayoo");
               var heading = "Your Unique ID  IS";
               var msg = req.body.uid;
 
@@ -211,6 +210,7 @@ router.post("/watermark", async (req, res) => {
                   }
                 })
                 .catch((e) => {
+                  console.log(e);
                   data = {
                     success: false,
                   };
@@ -362,6 +362,7 @@ router.post("/claim", (req, res) => {
             })
             .catch((e) => {
               //
+              console.log(e);
               msg = "An error occured please reload and resend your info.";
               return res.render("claim.ejs", {
                 msg: msg,
@@ -370,8 +371,9 @@ router.post("/claim", (req, res) => {
               });
               //
             });
-        } catch (error) {
+        } catch (e) {
           //
+          console.log(e);
           msg = "An error occured please reload and resend your info.";
           return res.render("claim.ejs", {
             msg: msg,
