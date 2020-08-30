@@ -3,7 +3,7 @@ const waterMarkImage = require("../../imagegen");
 const router = express.Router();
 const shortid = require("shortid");
 const ClaimConstructor = require("../../schemas/Claim");
-const Ads = require("../../schemas/Ad");
+
 const TempConstructor = require("../../schemas/Temp");
 const { generate } = require("shortid");
 const { response } = require("express");
@@ -39,25 +39,8 @@ var adList = ["adstories", "santoor", "chandrika"];
 router.get("/", (req, res) => {
   console.log(req.originalUrl);
   var ad = req.originalUrl.split("/")[1];
-  // if (adList.includes(ad)) res.render("index.ejs", { ad: ad });
-  // else res.send("404 page note found");
-  Ads.findOne({ name: ad })
-    .then((v) => {
-      if (v) return res.render("index.ejs", { ad: ad });
-      else
-        return res.render("msg.ejs", {
-          success: true,
-          msg: "404 not found",
-          heading: "",
-        });
-    })
-    .catch((e) => {
-      return res.render("msg.ejs", {
-        success: true,
-        msg: "An Error Occured Please Try Again",
-        heading: "",
-      });
-    });
+
+  res.render("index.ejs", { ad: ad });
 });
 
 //
@@ -183,8 +166,8 @@ router.post("/watermark", async (req, res) => {
   var uid = "";
   var generated = false;
   var i = 0;
-  var data={
-    success:false,
+  var data = {
+    success: false,
   };
   // wmid = "hi";
   // uid = "hi";
@@ -195,19 +178,16 @@ router.post("/watermark", async (req, res) => {
     uid = await nanoid();
     console.log(i);
     if (!generated) {
-    if (i < 10) {
-      i++;
+      if (i < 10) {
+        i++;
 
-      
-     
-        
         Claim.fromCollection(ad)
           .findOne({ uid: uid })
           .then((val) => {
             console.log("Checking if uid exists");
             if (val) {
               console.log("uid exists");
-             
+
               return uidGenerator();
             } else {
               Claim.fromCollection(ad)
@@ -225,38 +205,35 @@ router.post("/watermark", async (req, res) => {
                       wmid: wmid,
                       uid: uid,
                     };
-                    generated=true
-                    console.log("________________2________________")
-                    return res.json(data)
+                    generated = true;
+                    console.log("________________2________________");
+                    return res.json(data);
                   }
                 })
                 .catch((e) => {
                   data = {
                     success: false,
                   };
-                  console.log("________________1________________")
-                  return res.json(data)
+                  console.log("________________1________________");
+                  return res.json(data);
                 });
             }
-        
           });
-      
+      } else {
+        console.log("exceeded 10");
+        var data = {
+          success: false,
+        };
+        console.log("________________3________________");
+        return res.json(data);
+      }
     } else {
-      console.log("exceeded 10");
       var data = {
         success: false,
       };
-      console.log("________________3________________")
-      return res.json(data)
+      console.log("________________6________________");
+      return res.json(data);
     }
-  }else{
-    var data = {
-      success: false,
-    };
-    console.log("________________6________________")
-      return res.json(data)
-  }
-   
   };
 
   await uidGenerator();

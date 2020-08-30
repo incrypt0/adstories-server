@@ -1,5 +1,6 @@
 var env = process.argv[2] || "dev";
 var port = process.env.PORT || 8080;
+
 switch (env) {
   case "dev":
     // Setup development config
@@ -25,6 +26,7 @@ const waterMarkImage = require("./imagegen");
 // Routes
 var adsRoute = require("./routes/ad/ad");
 var claimAmountRoute = require("./routes/claim/claim_amount");
+const Ad = require("./schemas/Ad");
 
 // Static directory
 app.use(express.static(__dirname + "/public"));
@@ -54,8 +56,37 @@ app.use(
   })
 );
 
+// Middlewares
+var adExistsMiddleWare = (req, res, next) => {
+  console.log(req.originalUrl);
+  var ad = req.originalUrl.split("/")[1];
+
+  Ad.findOne({ name: ad })
+    .then((v) => {
+      if (!v) {
+        return res.render("msg.ejs", {
+          success: true,
+          msg: "404 not found",
+          heading: "",
+        });
+      } else {
+        next();
+      }
+    })
+    .catch((e) => {
+      return res.render("msg.ejs", {
+        success: true,
+        msg: "An Error Occured Please Try Again",
+        heading: "",
+      });
+    });
+  return;
+};
 // Routes
+
+// Claims route
 app.use("/claim", claimAmountRoute);
+
 // app.get("/track_test", (req, res) => {
 //   res.render("track2.ejs", {
 //     heading: "Claim Status",
@@ -67,7 +98,9 @@ app.use("/claim", claimAmountRoute);
 //     uid: "ABCDEFG",
 //   });
 // });
-app.use("/:ad", adsRoute);
+
+
+app.use("/:ad", adExistsMiddleWare, adsRoute);
 
 // Root
 app.get("/", (req, res) => {
