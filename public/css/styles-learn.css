@@ -214,8 +214,10 @@ header{
 
 .footer{
     padding-top: 50px;
- 
+
+    
 }
+
 
 .footer img{
     width: 120px;
@@ -233,6 +235,7 @@ p{
     color:black;
     font-family: Axiforma;
     font-size: 10px;
+    
 }
 
 select{
@@ -515,14 +518,16 @@ hr{
 }
 
 div p {
-    text-align: initial;
+    /* text-align: center; */
     color: grey;
     font-family: Axiforma;
     font-size: 15px;
     font-weight: 200;
     margin-top: 5px;
 }
-
+#footer p{
+    text-align: center;
+}
 .display{
     display: flex;
     margin: 10px 0 10px 0;

@@ -56,22 +56,22 @@ app.use(
 
 // Routes
 app.use("/claim", claimAmountRoute);
-app.get("/track_test", (req, res) => {
-  res.render("track2.ejs", {
-    heading: "Claim Status",
-    msg: "Your claim has been verified and payment is under process",
-    submitted: true,
-    verified: true,
-    payment: false,
-    name: "Hari R U",
-    uid: "ABCDEFG",
-  });
-});
+// app.get("/track_test", (req, res) => {
+//   res.render("track2.ejs", {
+//     heading: "Claim Status",
+//     msg: "Your claim has been verified and payment is under process",
+//     submitted: true,
+//     verified: true,
+//     payment: false,
+//     name: "Hari R U",
+//     uid: "ABCDEFG",
+//   });
+// });
 app.use("/:ad", adsRoute);
 
 // Root
 app.get("/", (req, res) => {
-  res.redirect("/adstories");
+  res.redirect("http://adstories.in");
 });
 
 app.listen(port, () => {

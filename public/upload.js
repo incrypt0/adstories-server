@@ -21,6 +21,7 @@ var clicked = false;
 var downloadGenerated = false;
 
 // UID variables
+
 var uid;
 var wmid;
 
@@ -60,10 +61,15 @@ document.getElementById("download").addEventListener("click", function () {
 });
 
 // Run the  Loader animation
-function runLoaderAnimation() {
+function runLoaderAnimation(imgur) {
   console.log("loader started");
   animation_container.classList.add("loader-container");
   animation.classList.add("loader");
+
+    if(imgur){
+      document.getElementById("wait").innerText = "Uploading...";
+    }
+
 }
 
 // Stop the  Loader animation
@@ -87,7 +93,7 @@ const waterMarkImage = (data) => {
       if (resp.data.success) {
         uid = resp.data.uid;
         wmid = resp.data.wmid;
-       
+
         console.log("reached just before download base64");
         // downloadBase64File(resp.data.buffer, "ad.jpg");
         watermarkPrinter(wmid, uid);
@@ -118,18 +124,9 @@ function downloadBase64File(base64Data, fileName) {
 }
 
 // SubmitForm
-claimBtn.addEventListener("click", (e) => {
-  runLoaderAnimation();
-  e.preventDefault();
-  if (uploadUrl.length == 0) {
-    error.innerText = text = "Upload not completed";
-    s;
-    stopLoaderAnimation();
-  } else {
-    createUidsInput(uid, wmid);
-    stopLoaderAnimation();
-  }
-});
+// claimBtn.addEventListener("click", (e) => {
+
+// });
 
 // Create hidden form inputs for uid and wmuid
 function addToForm(inputKey, inputValue) {
@@ -148,9 +145,10 @@ function createUidsInput(uid, wmuid) {
   if (uid && wmuid) {
     addToForm("uid", uid);
     addToForm("wmid", wmuid);
-    form.submit();
+    return true;
   } else {
     error.innerHTML = "Please download the file before clicking submit";
+    return false;
   }
 }
 
@@ -171,9 +169,41 @@ watermarkPrinter = (watermark, uid) => {
   ctx.fillText(watermark, 80, 80);
 
   // Download link
-  var a = document.createElement("a");
-  a.download = `${uid}.png`;
+
+  downloadLink.download = `${uid}.png`;
   var dataUrl = canvas.toDataURL("image/png");
-  a.href = dataUrl;
-  a.click();
+  downloadLink.href = dataUrl;
+  stopLoaderAnimation();
+  console.log("loader stopped");
+  if (dataUrl.length < 13) {
+    clicked = !clicked;
+  } else {
+    downloadLink.click();
+    console.log("clicked generated download");
+    console.log(downloadLink);
+    downloadGenerated = !downloadGenerated;
+  }
+  downloadLink.click();
+  stopLoaderAnimation();
 };
+
+// Form Submission Event Listener
+
+form.addEventListener("submit", (e) => {
+  runLoaderAnimation();
+
+  error.innerText = "";
+  if (uploadUrl.length == 0) {
+    error.innerText = text = "Upload not completed";
+  } else if (uploadUrl.value.length == 0 || uploadUrl.value.trim() == "") {
+    error.innerText =
+      "Please upload the status/story screenshot before submitting";
+  } else if (!downloadGenerated) {
+    error.innerText = text =
+      "Please download the ad and upload the status screenshot";
+  } else {
+    return createUidsInput(uid, wmid);
+  }
+  e.preventDefault();
+  stopLoaderAnimation();
+});

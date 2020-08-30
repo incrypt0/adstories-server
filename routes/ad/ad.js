@@ -3,10 +3,12 @@ const waterMarkImage = require("../../imagegen");
 const router = express.Router();
 const shortid = require("shortid");
 const ClaimConstructor = require("../../schemas/Claim");
+const Ads = require("../../schemas/Ad");
 const TempConstructor = require("../../schemas/Temp");
 const { generate } = require("shortid");
 const { response } = require("express");
-
+const { customAlphabet } = require("nanoid");
+const nanoid = customAlphabet("1234567890abcdefghijklmnopqrstuvwxyz", 6);
 const Claim = new ClaimConstructor();
 const Temp = new TempConstructor();
 
@@ -26,11 +28,34 @@ var adList = ["adstories", "santoor", "chandrika"];
 //
 
 // Ads Route
+// router.get("/", (req, res) => {
+//   console.log(req.originalUrl);
+//   var ad = req.originalUrl.split("/")[1];
+//   if (adList.includes(ad)) res.render("index.ejs", { ad: ad });
+//   else res.send("404 page note found");
+// });
+
+// 
 router.get("/", (req, res) => {
   console.log(req.originalUrl);
   var ad = req.originalUrl.split("/")[1];
-  if (adList.includes(ad)) res.render("index.ejs", { ad: ad });
-  else res.send("404 page note found");
+  // if (adList.includes(ad)) res.render("index.ejs", { ad: ad });
+  // else res.send("404 page note found");
+  Ads.findOne({name:ad}).then((v)=>{
+    if(v)return res.render("index.ejs", { ad: ad });
+    else return res.render("msg.ejs", {
+      success: true,
+      msg: "404 not found",
+      heading: "",
+    });
+    
+  }).catch((e)=>{
+    return res.render("msg.ejs", {
+      success: true,
+      msg: "An Error Occured Please Try Again",
+      heading: "",
+    });
+  })
 });
 
 //
@@ -147,7 +172,7 @@ router.post("/", (req, res) => {
 //
 
 // Watermark and Unique ID Generation
-router.post("/watermark", (req, res) => {
+router.post("/watermark", async (req, res) => {
   var ad = req.originalUrl.split("/")[1];
   console.log("begining");
   //
@@ -156,10 +181,11 @@ router.post("/watermark", (req, res) => {
   var uid = "";
   var generated = false;
 
-  var uidGenerator = () => {
+  var uidGenerator = async () => {
     console.log("running uidGenerator");
-    wmid = shortid.generate();
-    uid = shortid.generate();
+
+    wmid = await nanoid();
+    uid = await nanoid();
     if (!generated) {
       Claim.fromCollection(ad)
         .findOne({ uid: uid })
@@ -262,21 +288,24 @@ router.post("/claim", (req, res) => {
   Claim.fromCollection(ad)
     .findOne({ uid: req.body.uid })
     .then((doc) => {
+      var msg;
       if (!(req.body.upi && req.body.uid)) {
         //
         //
-        var msg = "Please Fill all the fields";
-        return res.render("claim.ejs", { msg: msg, url: url });
+        msg = "Please Fill all the fields";
+        return res.render("claim.ejs", {
+          msg: msg,
+          url: url,
+          color: "#f19898",
+        });
         //
         //
       } else if (doc) {
         //
         //
         //
-        if (doc.submitted === true) {
-          var msg = "Claim Updated with new details";
-          return res.render("claim.ejs", { msg: msg, url: url });
-        }
+        var alreadySubmitted=doc.submitted;
+        
         //
         //
         //
@@ -292,26 +321,52 @@ router.post("/claim", (req, res) => {
           doc
             .save()
             .then((val) => {
+              if (alreadySubmitted === true) {
+                msg = "Claim Updated with new details";
+                color = "green";
+                return res.render("claim.ejs", {
+                  msg: msg,
+                  url: url,
+                  color: "green",
+                });
+              }
               //
-              var msg = "Claim Registered";
-              return res.render("claim.ejs", { msg: msg, url: url });
+              msg = "Claim Registered";
+              return res.render("claim.ejs", {
+                msg: msg,
+                url: url,
+                color: "green",
+              });
               //
             })
             .catch((e) => {
               //
-              var msg = "An error occured please reload and resend your info.";
-              return res.render("claim.ejs", { msg: msg, url: url });
+              msg = "An error occured please reload and resend your info.";
+              return res.render("claim.ejs", {
+                msg: msg,
+                url: url,
+                color: "#f19898",
+              });
               //
             });
         } catch (error) {
           //
-          return res.sendStatus(400);
+          msg = "An error occured please reload and resend your info.";
+          return res.render("claim.ejs", {
+            msg: msg,
+            url: url,
+            color: "#f19898",
+          });
           //
         }
       } else {
         //
-        var msg = "Unique ID does not match any documents";
-        return res.render("claim.ejs", { msg: msg, url: url });
+        msg = "Unique ID does not match any documents";
+        return res.render("claim.ejs", {
+          msg: msg,
+          url: url,
+          color: "#f19898",
+        });
         //
       }
     });
@@ -361,15 +416,14 @@ router.post("/status", (req, res) => {
           var verified = val.verified;
           var payment = val.payment;
           var msg = "";
-         
 
           res.render("track2.ejs", {
             heading: "Status of your claim",
-            submitted:submitted,
+            submitted: submitted,
             verified: verified,
             payment: payment,
-            uid:val.uid??'',
-            name:val.name??'',
+            uid: val.uid ?? "",
+            name: val.name ?? "",
             msg: msg,
           });
         } else {
