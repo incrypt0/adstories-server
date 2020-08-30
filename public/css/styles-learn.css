@@ -458,6 +458,7 @@ form{
 }    
 
 .join p{
+    text-align: left;
     font-family: Axiforma;
     font-weight: 200;
     margin-top: 0%;
