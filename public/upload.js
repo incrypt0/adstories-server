@@ -181,7 +181,7 @@ watermarkPrinter = (watermark, uid) => {
     console.log(downloadLink);
     downloadGenerated = !downloadGenerated;
   }
-  downloadLink.click();
+
   stopLoaderAnimation();
 };
 
