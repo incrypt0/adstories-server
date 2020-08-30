@@ -192,7 +192,6 @@
       });
     },
     run: function () {
-     
       var loadingModal = document.querySelector(".loading-modal");
       if (!loadingModal) {
         this.loading();
@@ -203,5 +202,3 @@
 
   return Imgur;
 });
-
-

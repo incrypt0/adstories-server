@@ -66,10 +66,9 @@ function runLoaderAnimation(imgur) {
   animation_container.classList.add("loader-container");
   animation.classList.add("loader");
 
-    if(imgur){
-      document.getElementById("wait").innerText = "Uploading...";
-    }
-
+  if (imgur) {
+    document.getElementById("wait").innerText = "Uploading...";
+  }
 }
 
 // Stop the  Loader animation
@@ -169,7 +168,6 @@ watermarkPrinter = (watermark, uid) => {
   ctx.fillText(watermark, 80, 80);
 
   // Download link
-
   downloadLink.download = `${uid}.png`;
   var dataUrl = canvas.toDataURL("image/png");
   downloadLink.href = dataUrl;
@@ -188,7 +186,6 @@ watermarkPrinter = (watermark, uid) => {
 };
 
 // Form Submission Event Listener
-
 form.addEventListener("submit", (e) => {
   runLoaderAnimation();
 
