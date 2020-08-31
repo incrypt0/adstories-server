@@ -538,6 +538,51 @@ router.get("/page", (req, res) => {
 //
 //
 /**
+ * @route get /:ad/page
+ * @desc Only for admins
+ * @access admins
+ */
+//
+//
+//
+
+router.get("/pagesapi", (req, res) => {
+  var ad = req.originalUrl.split("/")[1];
+  const page = req.query.page;
+  const limit = req.query.limit;
+  const startIndex = (page - 1) * limit;
+  const endIndex = page * limit;
+
+  const results = {};
+  const options = {
+    page: page??1,
+    limit: limit??20,
+    collation: {
+      locale: "en",
+    },
+  };
+  Claim.fromCollection(ad)
+    .paginate({}, options)
+    .then((val) => {
+      var result = val.docs;
+      console.log(result[0]);
+      if (result) {
+        var urlGen = () => {
+          var urlList = result.url.split(".");
+          urlList[2] = urlList[2] + "m";
+
+          urlList.join(".");
+        };
+
+        return res.json({ success: true, docs: val.docs });
+      }
+      return res.json({ success: false });
+    });
+});
+//
+//
+//
+/**
  * @route POST /:ad/page
  * @desc Only for admins
  * @access admins
@@ -556,8 +601,9 @@ router.post("/update", (req, res) => {
       .then((doc) => {
         console.log("hi");
         if (doc) {
-          console.log("doc exists");
+          console.log("doc exists : "+req.body.type);
           if (req.body.type == "submitted") {
+            console.log("its submitted")
             doc.submitted = req.body.submitted;
           } else if (req.body.type == "verified") {
             doc.verified = req.body.verified;
@@ -584,6 +630,7 @@ router.post("/update", (req, res) => {
               });
             })
             .catch((e) => {
+              console.log(e)
               return res.json({
                 success: false,
               });

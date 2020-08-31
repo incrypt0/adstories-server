@@ -7,6 +7,8 @@ document.querySelectorAll(".decider").forEach((item) => {
     item.innerHTML = loading;
     const type = item.attributes.val.value;
     const dbid = item.attributes.dbid.value;
+    console.log("clicked : "+type)
+    console.log(`${type} , ${dbid} ,${item},${boolVal}`)
     postUpdate(type, dbid, item, boolVal);
   });
 });
@@ -17,11 +19,14 @@ function postUpdate(type, dbid, item, boolVal) {
   myHeaders.append("Content-Type", "application/json");
   var dataVal = !(boolVal.toLowerCase() == "true");
 
+  console.log(dataVal)
   var reqOptions = {};
   reqOptions[type] = dataVal;
   reqOptions.dbid = dbid;
   reqOptions.type =type;
+  console.log(reqOptions)
   var raw = JSON.stringify(reqOptions);
+  console.log(raw)
   var requestOptions = {
     method: "POST",
     headers: myHeaders,
