@@ -35,19 +35,13 @@ redis.on("error", (e) => {
 //
 
 // Ads Route
-// router.get("/", (req, res) => {
-//   console.log(req.originalUrl);
-//   var ad = req.originalUrl.split("/")[1];
-//   if (adList.includes(ad)) res.render("index.ejs", { ad: ad });
-//   else res.send("404 page note found");
-// });
 
 //
 router.get("/", (req, res) => {
-  console.log(`get request into ${req.originalUrl}`);
+  // console.log(`get request into ${req.originalUrl}`);
   var ad = req.originalUrl.split("/")[1];
 
-  res.render("index.ejs", { ad: ad });
+  res.render("index.ejs", { ad: ad??'' });
 });
 
 //
@@ -68,7 +62,6 @@ router.post("/", (req, res) => {
   if (req.body.uid && req.body.wmid) {
     redis.exists(req.body.uid, (err, reply) => {
       if (reply === 1) {
-        console.log("uid exists in redis");
         Claim.fromCollection(ad)
           .findOne({
             uid: req.body.uid,
@@ -95,8 +88,8 @@ router.post("/", (req, res) => {
                 if (user) {
                   var msg = "Already Registered for claim";
                   return res.render("index.ejs", {
-                    ad: ad,
-                    msg: msg,
+                    ad: ad ??'',
+                    msg: msg ?? '',
                     bgcolor: "#f19898",
                     color: "black",
                   });
@@ -457,7 +450,7 @@ router.get("/status", (req, res) => {
 
 router.post("/status", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
-  console.log(ad);
+  
   var url = req.originalUrl;
   if (req.body.uid) {
     req.body.uid = req.body.uid.trim();

@@ -1,5 +1,7 @@
+function deciderListener(){
 document.querySelectorAll(".decider").forEach((item) => {
   item.addEventListener("click", (event) => {
+    console.log("clicked")
     const loading =
       '<div class="spinner-border spinner-border-sm text-primary" role="status"><span class="sr-only">Loading...</span></div>';
     var boolVal = item.innerText;
@@ -13,6 +15,8 @@ document.querySelectorAll(".decider").forEach((item) => {
   });
 });
 
+} 
+deciderListener();
 function postUpdate(type, dbid, item, boolVal) {
   var myHeaders = new Headers();
 
