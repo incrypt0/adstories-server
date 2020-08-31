@@ -60,7 +60,7 @@ function getUpdates( item) {
   };
 
   fetch(
-    `http://localhost:3000/adstories/pagesapi/?page=${page++}&limit=20`,
+    `pagesapi/?page=${page++}&limit=20`,
     requestOptions
   )
     .then((response) => response.text())
