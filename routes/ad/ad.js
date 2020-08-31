@@ -510,7 +510,7 @@ router.get("/page", (req, res) => {
   const results = {};
   const options = {
     page: 1,
-    limit: 10,
+    limit: 20,
     collation: {
       locale: "en",
     },
@@ -519,7 +519,7 @@ router.get("/page", (req, res) => {
     .paginate({}, options)
     .then((val) => {
       var result = val.docs;
-      console.log(result[0]);
+      console.log(result.length);
       if (result) {
         var urlGen = () => {
           var urlList = result.url.split(".");
