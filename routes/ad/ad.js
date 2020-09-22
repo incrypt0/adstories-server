@@ -65,6 +65,7 @@ router.get("/", (req, res) => {
 // Unique ID generation
 router.post("/", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
+  
   if (req.body.uid && req.body.wmid) {
     redis.exists(req.body.uid, (err, reply) => {
       if (reply === 1) {
