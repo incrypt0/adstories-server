@@ -65,17 +65,22 @@ router.get("/", (req, res) => {
 // Unique ID generation
 router.post("/", (req, res) => {
   var ad = req.originalUrl.split("/")[1];
-  
+
   if (req.body.uid && req.body.wmid) {
     redis.exists(req.body.uid, (err, reply) => {
       if (reply === 1) {
         console.log("uid exists in redis");
         Claim.fromCollection(ad)
           .findOne({
-            uid: req.body.uid,
+            $or: [
+              { uid: req.body.uid },
+              { wmid: req.body.wmid },
+              { wanumber: req.body.wanumber },
+            ],
           })
           .then((user) => {
             if (user) {
+
               var msg = `Already Registered for claim with UID : ${user.uid} `;
               return res.render("index.ejs", {
                 msg: msg,
@@ -85,73 +90,56 @@ router.post("/", (req, res) => {
               });
             }
 
-            // Check whether wmid already exist
-            Claim.fromCollection(ad)
-              .findOne({
+            var ad = req.originalUrl.split("/")[1];
+
+            // Create new Claim
+            let newClaim;
+            try {
+              newClaim = new Claim.fromCollection(ad)({
+                name: req.body.name,
+                wanumber: req.body.wanumber,
+                img: req.body.img,
+                url: req.body.url,
+                uid: req.body.uid,
                 wmid: req.body.wmid,
+              });
+            } catch (e) {
+              console.log(e);
+              return res.render("index.ejs", {
+                ad: ad,
+                msg: "An error occured please try again",
+                bgcolor: "#f19898",
+                color: "black",
+              });
+            }
+
+            //  Save claim to database
+            newClaim
+              .save()
+              .then((claim) => {
+                var heading = "Your Unique ID  IS";
+                var msg = req.body.uid;
+
+                return res.render("msg.ejs", {
+                  success: true,
+                  msg: msg,
+                  heading: heading,
+                });
               })
-              .then((user) => {
-                var ad = req.originalUrl.split("/")[1];
-
-                if (user) {
-                  var msg = "Already Registered for claim";
-                  return res.render("index.ejs", {
-                    ad: ad,
-                    msg: msg,
-                    bgcolor: "#f19898",
-                    color: "black",
-                  });
-                }
-
-                // Create new Claim
-                let newClaim;
-                try {
-                  newClaim = new Claim.fromCollection(ad)({
-                    name: req.body.name,
-                    wanumber: req.body.wanumber,
-                    img: req.body.img,
-                    url: req.body.url,
-                    uid: req.body.uid,
-                    wmid: req.body.wmid,
-                  });
-                } catch (e) {
-                  console.log(e);
-                  return res.render("index.ejs", {
-                    ad: ad,
-                    msg: "Already Registered for claim",
-                    bgcolor: "#f19898",
-                    color: "black",
-                  });
-                }
-
-                //  Save claim to database
-                newClaim
-                  .save()
-                  .then((claim) => {
-                    var heading = "Your Unique ID  IS";
-                    var msg = req.body.uid;
-
-                    return res.render("msg.ejs", {
-                      success: true,
-                      msg: msg,
-                      heading: heading,
-                    });
-                  })
-                  .catch((e) => {
-                    console.log(e);
-                    var msg = "An error occured please try again";
-                    return res.render("index.ejs", {
-                      ad: ad,
-                      msg: msg,
-                      bgcolor: "#f19898",
-                      color: "black",
-                    });
-                  });
+              .catch((e) => {
+                console.log(e);
+                var msg = "An error occured please try again";
+                return res.render("index.ejs", {
+                  ad: ad,
+                  msg: msg,
+                  bgcolor: "#f19898",
+                  color: "black",
+                });
               });
           });
       } else {
         console.log("uid doesn't exist");
-        var msg = "An error occured please try again";
+        var msg = "Time Out";
         return res.render("index.ejs", {
           ad: ad,
           msg: msg,
